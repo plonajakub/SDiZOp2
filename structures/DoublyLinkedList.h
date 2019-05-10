@@ -65,8 +65,14 @@ public:
     // If value does not exist VALUE_NOT_FOUND is returned
     int search(const T &value) const;
 
+    bool operator==(const DoublyLinkedList<T> &otherList) const;
+
+    bool operator!=(const DoublyLinkedList<T> &otherList) const;
+
     // Returns list's size
     int getSize() const;
+
+    Node<T>* getIterator() const;
 
     // Makes list's string representation
     std::string toString() const;
@@ -88,7 +94,7 @@ template <class T>
 std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<T> &dll);
 
 template class DoublyLinkedList<int>;
-template class DoublyLinkedList<DoublyLinkedList<int>*>;
+template class DoublyLinkedList<DoublyLinkedList<int>>;
 
 
 #endif //SDIZO_P1_DOUBLYLINKEDLIST_H

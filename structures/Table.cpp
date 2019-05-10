@@ -203,9 +203,9 @@ std::string Table<T>::toString() const {
     return strTable;
 }
 
-// TODO Table<Table<int>*>::toString() to be implemented
+// TODO Table<Table<int>>::toString() to be implemented
 template <>
-std::string Table<Table<int>*>::toString() const {
+std::string Table<Table<int>>::toString() const {
     std::string strTable;
     strTable.append("[");
     for (int i = 0; i < size - 1; ++i) {
@@ -252,6 +252,21 @@ double Table<T>::getFullFactor() const {
     } else {
         return static_cast<double>(size) / capacity;
     }
+}
+
+template <class T>
+bool Table<T>::operator==(const Table<T> &otherTable) const {
+    for (int i = 0; i < this->size; ++i) {
+        if ((*this)[i] != otherTable[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <class T>
+bool Table<T>::operator!=(const Table<T> &otherTable) const {
+    return !(*this == otherTable);
 }
 
 template <class T>

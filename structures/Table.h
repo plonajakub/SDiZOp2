@@ -45,6 +45,10 @@ public:
     // For accessing table's elements
     T &operator[](int index) const;
 
+    bool operator==(const Table<T> &otherTable) const;
+
+    bool operator!=(const Table<T> &otherTable) const;
+
     int getSize() const;
 
     int getCapacity() const;
@@ -78,6 +82,6 @@ template <class T>
 std::ostream &operator<<(std::ostream &ostr, const Table<T> &table);
 
 template class Table<int>;
-template class Table<Table<int>*>;
+template class Table<Table<int>>;
 
 #endif //SDIZO_P1_TABLE_H

@@ -173,12 +173,12 @@ std::string DoublyLinkedList<T>::toString() const {
     return strDll;
 }
 
-// TODO DoublyLinkedList<DoublyLinkedList<int>*>::toString() to be implemented
+// TODO DoublyLinkedList<DoublyLinkedList<int>>::toString() to be implemented
 template <>
-std::string DoublyLinkedList<DoublyLinkedList<int>*>::toString() const {
+std::string DoublyLinkedList<DoublyLinkedList<int>>::toString() const {
     std::string strDll;
     strDll.append("[");
-    Node<DoublyLinkedList<int>*> *it = sentry->next;
+    Node<DoublyLinkedList<int>> *it = sentry->next;
     while (!it->next->isSentry) {
         strDll.append("NOT IMPLEMENTED");
         strDll.append(", ");
@@ -194,6 +194,26 @@ std::string DoublyLinkedList<DoublyLinkedList<int>*>::toString() const {
 template <class T>
 int DoublyLinkedList<T>::getSize() const {
     return size;
+}
+
+template <class T>
+bool DoublyLinkedList<T>::operator==(const DoublyLinkedList<T> &otherList) const {
+    for (int i = 0; i < this->size; ++i) {
+        if (this->sentry[i].data != otherList.getIterator()[i].data) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <class T>
+bool DoublyLinkedList<T>::operator!=(const DoublyLinkedList<T> &otherList) const {
+    return !(*this == otherList);
+}
+
+template <class T>
+Node<T> *DoublyLinkedList<T>::getIterator() const {
+    return sentry;
 }
 
 template <class T>
