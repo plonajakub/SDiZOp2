@@ -17,6 +17,34 @@ DoublyLinkedList<T>::~DoublyLinkedList() noexcept {
     delete sentry;
 }
 
+template<class T>
+DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList &otherList) {
+    sentry = new Node<T>();
+    size = 0;
+    DoublyLinkedList<T>::Iterator otherIt = otherList.getIterator();
+    DoublyLinkedList<T>::Iterator otherItEnd = otherList.getEndIt();
+    while (otherIt != otherItEnd) {
+        this->insertAtEnd(otherIt.getData());
+        ++otherIt;
+    }
+}
+
+template<class T>
+DoublyLinkedList<T> &DoublyLinkedList<T>::operator=(const DoublyLinkedList &otherList) {
+    if (this != &otherList) {
+        while (this->size > 0) {
+            this->removeFromEnd();
+        }
+        DoublyLinkedList<T>::Iterator otherIt = otherList.getIterator();
+        DoublyLinkedList<T>::Iterator otherItEnd = otherList.getEndIt();
+        while (otherIt != otherItEnd) {
+            this->insertAtEnd(otherIt.getData());
+            ++otherIt;
+        }
+    }
+    return *this;
+}
+
 template <class T>
 void DoublyLinkedList<T>::insert(int index, const T &value) {
     // Check if index is valid
@@ -198,10 +226,18 @@ int DoublyLinkedList<T>::getSize() const {
 
 template <class T>
 bool DoublyLinkedList<T>::operator==(const DoublyLinkedList<T> &otherList) const {
-    for (int i = 0; i < this->size; ++i) {
-        if (this->sentry[i].data != otherList.getIterator()[i].data) {
+    if (this->size != otherList.getSize()) {
+        return false;
+    }
+    DoublyLinkedList<T>::Iterator it = this->getIterator();
+    DoublyLinkedList<T>::Iterator itEnd = this->getEndIt();
+    DoublyLinkedList<T>::Iterator otherIt = otherList.getIterator();
+    while (it != itEnd) {
+        if (it.getData() != otherIt.getData()) {
             return false;
         }
+        ++it;
+        ++otherIt;
     }
     return true;
 }
@@ -212,8 +248,18 @@ bool DoublyLinkedList<T>::operator!=(const DoublyLinkedList<T> &otherList) const
 }
 
 template <class T>
-Node<T> *DoublyLinkedList<T>::getIterator() const {
-    return sentry;
+typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getIterator() const {
+    return typename DoublyLinkedList<T>::Iterator(sentry);
+}
+
+template<class T>
+typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getEndIt() {
+    return DoublyLinkedList::Iterator(this->sentry);
+}
+
+template<class T>
+typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getEndIt() const {
+    return DoublyLinkedList::Iterator(this->sentry);
 }
 
 template <class T>

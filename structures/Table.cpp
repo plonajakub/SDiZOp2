@@ -9,6 +9,26 @@ Table<T>::~Table() noexcept {
     delete[] table;
 }
 
+template<class T>
+Table<T>::Table(const Table &otherTable) : size(0), capacity(0), table(nullptr) {
+    for (int i = 0; i < otherTable.getSize(); ++i) {
+        this->insert(i, otherTable[i]);
+    }
+}
+
+template<class T>
+Table<T> &Table<T>::operator=(const Table &otherTable) {
+    if (this != &otherTable) {
+        while (this->getSize() > 0) {
+            this->removeFromEnd();
+        }
+        for (int i = 0; i < otherTable.getSize(); ++i) {
+            this->insert(i, otherTable[i]);
+        }
+    }
+    return *this;
+}
+
 template <class T>
 void Table<T>::insert(int index, const T &value) {
     // Check if index is valid
@@ -256,6 +276,9 @@ double Table<T>::getFullFactor() const {
 
 template <class T>
 bool Table<T>::operator==(const Table<T> &otherTable) const {
+    if (this->getSize() != otherTable.getSize()) {
+        return false;
+    }
     for (int i = 0; i < this->size; ++i) {
         if ((*this)[i] != otherTable[i]) {
             return false;

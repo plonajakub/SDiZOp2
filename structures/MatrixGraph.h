@@ -2,6 +2,9 @@
 #define SDIZOP2_MATRIXGRAPH_H
 
 #include <iostream>
+#include <limits>
+#include <sstream>
+#include <iomanip>
 
 #include "Table.h"
 #include "DoublyLinkedList.h"
@@ -37,7 +40,7 @@ public:
 
     int getEdgeCount() const;
 
-    int getDensity() const;
+    double getDensity() const;
 
     std::string toString() const;
 

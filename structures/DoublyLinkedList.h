@@ -32,9 +32,41 @@ public:
 template <class T>
 class DoublyLinkedList {
 public:
+
+    class Iterator {
+    public:
+        explicit Iterator(Node<T> *sentry) {
+            currNode = sentry->next;
+        }
+        void operator++() {
+            currNode = currNode->next;
+        }
+        void operator--() {
+            currNode = currNode->prev;
+        }
+        bool operator==(const Iterator &other) {
+            return this->currNode == other.currNode;
+        }
+        bool operator!=(const Iterator &other) {
+            return this->currNode != other.currNode;
+        }
+        T &getData() {
+            return currNode->data;
+        }
+        const T &getData() const {
+            return currNode->data;
+        }
+    private:
+        Node<T> *currNode;
+    };
+
     DoublyLinkedList() noexcept;
 
     ~DoublyLinkedList() noexcept;
+
+    DoublyLinkedList(const DoublyLinkedList &otherList);
+
+    DoublyLinkedList &operator=(const DoublyLinkedList &otherList);
 
     // Inserts new node with data equal to value into the place described by index
     void insert(int index, const T &value);
@@ -72,7 +104,11 @@ public:
     // Returns list's size
     int getSize() const;
 
-    Node<T>* getIterator() const;
+    Iterator getIterator() const;
+
+    Iterator getEndIt();
+
+    Iterator getEndIt() const;
 
     // Makes list's string representation
     std::string toString() const;

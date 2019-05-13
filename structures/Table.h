@@ -13,6 +13,10 @@ public:
 
     ~Table() noexcept;
 
+    Table(const Table &otherTable);
+
+    Table &operator=(const Table &otherTable);
+
     // Inserts value into table on place described by index
     void insert(int index, const T &value);
 
