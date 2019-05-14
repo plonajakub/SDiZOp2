@@ -10,19 +10,21 @@
 #include "DoublyLinkedList.h"
 
 class MatrixGraph {
+
 public:
+
 
     enum GraphType {
         Directed, Undirected
     };
 
-    explicit MatrixGraph(GraphType graphType);
+    MatrixGraph(GraphType graphType, int nVertex);
 
-    void addVertex();
+    inline void addVertex();
 
     void removeVertex(int vertexID);
 
-    void addEdge(int startVertexID, int endVertexID, int weight);
+    void addEdge(int startVertexID, int endVertexID, int weight_flow);
 
     void removeEdge(int startVertexID, int endVertexID);
 
@@ -31,6 +33,12 @@ public:
     void getVertexSuccessors(int vertexID, DoublyLinkedList<int> &outSuccessorsList) const;
 
     void getVertexPredecessors(int vertexID, DoublyLinkedList<int> &outPredecessorsList) const;
+
+    int getEdgeIdFromVertexes(int startVertexID, int endVertexID) const;
+
+    // Table[0]: startVertexID
+    // Table[1]: endVertexID
+    Table<int> getVertexIdsFromEdge(int edgeID) const;
 
     int getEdgeWeight(int startVertexID, int endVertexID) const;
 
@@ -43,6 +51,11 @@ public:
     double getDensity() const;
 
     std::string toString() const;
+
+    static const int EDGE_NOT_PRESENT = -2;
+
+    // TODO cannot link with static
+    const int VERTEX_NOT_PRESENT = -1;
 
 private:
 

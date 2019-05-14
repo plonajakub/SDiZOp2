@@ -6,11 +6,7 @@ void MatrixGraphTest::run() {
 
 void MatrixGraphTest::testToString() {
     cout << "### MatrixGraphTest::testToString() start ###" << endl;
-    MatrixGraph mg(MatrixGraph::GraphType::Directed);
-    mg.addVertex();
-    mg.addVertex();
-    mg.addVertex();
-    mg.addVertex();
+    MatrixGraph mg(MatrixGraph::GraphType::Directed, 4);
     mg.addEdge(0, 1, 5);
     mg.addEdge(0, 2, 10);
     mg.addEdge(1, 2, 15);
