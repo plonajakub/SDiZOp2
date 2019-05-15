@@ -267,7 +267,7 @@ bool DoublyLinkedList<T>::operator!=(const DoublyLinkedList<T> &otherList) const
 
 template <class T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getIterator() const {
-    return typename DoublyLinkedList<T>::Iterator(sentry);
+    return typename DoublyLinkedList<T>::Iterator(this->sentry->next);
 }
 
 template<class T>
@@ -278,6 +278,16 @@ typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getEndIt() {
 template<class T>
 typename DoublyLinkedList<T>::Iterator DoublyLinkedList<T>::getEndIt() const {
     return DoublyLinkedList::Iterator(this->sentry);
+}
+
+template<class T>
+bool DoublyLinkedList<T>::contains(const T &data) const {
+    for (Iterator it = this->getIterator(); it != this->getEndIt(); ++it) {
+        if (it.getData() == data) {
+            return true;
+        }
+    }
+    return false;
 }
 
 template <class T>

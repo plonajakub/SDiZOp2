@@ -37,8 +37,8 @@ public:
 
     class Iterator {
     public:
-        explicit Iterator(Node<T> *sentry) {
-            currNode = sentry->next;
+        explicit Iterator(Node<T> *node) {
+            currNode = node;
         }
         void operator++() {
             currNode = currNode->next;
@@ -102,6 +102,8 @@ public:
     bool operator==(const DoublyLinkedList<T> &otherList) const;
 
     bool operator!=(const DoublyLinkedList<T> &otherList) const;
+
+    bool contains(const T &data) const;
 
     // Returns list's size
     int getSize() const;

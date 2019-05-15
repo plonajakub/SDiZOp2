@@ -34,21 +34,21 @@ public:
 
     DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
 
-    DoublyLinkedList<Edge> getEdgeParameter(int startVertexID, int endVertexID) const;
+    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const;
 
-    inline int getEdgeParameter(int edgeID) const;
+    int getEdgeParameter(int edgeID) const;
 
     // Table[0]: startVertexID
     // Table[1]: endVertexID
     Table<int> getVertexIdsFromEdge(int edgeID) const;
 
-    inline bool isVertexPartOfEdge(int vertexID, int edgeID) const;
+    bool isVertexPartOfEdge(int vertexID, int edgeID) const;
 
-    inline int getVertexCount() const;
+    int getVertexCount() const;
 
-    inline int getEdgeCount() const;
+    int getEdgeCount() const;
 
-    inline double getDensity() const;
+    double getDensity() const;
 
     std::string toString() const;
 
@@ -67,6 +67,7 @@ private:
     // Weight or flow
     Table<int> edgeParameters;
 
+    friend class MatrixGraphTest;
 };
 
 std::ostream &operator<<(std::ostream &ostr, const MatrixGraph &matrixGraph);

@@ -34,9 +34,13 @@ void MatrixGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter)
 }
 
 void MatrixGraph::removeEdges(int startVertexID, int endVertexID) {
+    // Edges must be sorted
     DoublyLinkedList<int> edges = this->getEdgeIdsFromVertexes(startVertexID, endVertexID);
     for (DoublyLinkedList<int>::Iterator it = edges.getIterator(); it != edges.getEndIt(); ++it) {
         this->removeEdge(it.getData());
+        for (DoublyLinkedList<int>::Iterator eit = edges.getIterator(); eit != edges.getEndIt(); ++eit) {
+            --eit.getData();
+        }
     }
 }
 
@@ -57,12 +61,12 @@ DoublyLinkedList<int> MatrixGraph::getVertexSuccessors(int vertexID) const {
         if (incidenceMatrix[vertexID][j] == 1) {
             for (int i = 0; i < vertexCount; ++i) {
                 if (this->TYPE == GraphType::Directed) {
-                    if (incidenceMatrix[i][j] == -1) {
+                    if (incidenceMatrix[i][j] == -1 && !outSuccessorsList.contains(i)) {
                         outSuccessorsList.insertAtEnd(i);
                         break;
                     }
                 } else {
-                    if (i != vertexID && incidenceMatrix[i][j] == 1) {
+                    if (i != vertexID && incidenceMatrix[i][j] == 1 && !outSuccessorsList.contains(i)) {
                         outSuccessorsList.insertAtEnd(i);
                         break;
                     }
@@ -81,7 +85,7 @@ DoublyLinkedList<int> MatrixGraph::getVertexPredecessors(int vertexID) const {
         if (this->TYPE == GraphType::Directed) {
             if (incidenceMatrix[vertexID][j] == -1) {
                 for (int i = 0; i < vertexCount; ++i) {
-                    if (incidenceMatrix[i][j] == 1) {
+                    if (incidenceMatrix[i][j] == 1 && !outPredecessorsList.contains(i)) {
                         outPredecessorsList.insertAtEnd(i);
                         break;
                     }
@@ -90,7 +94,7 @@ DoublyLinkedList<int> MatrixGraph::getVertexPredecessors(int vertexID) const {
         } else {
             if (incidenceMatrix[vertexID][j] == 1) {
                 for (int i = 0; i < vertexCount; ++i) {
-                    if (i != vertexID && incidenceMatrix[i][j] == 1) {
+                    if (i != vertexID && incidenceMatrix[i][j] == 1 && !outPredecessorsList.contains(i)) {
                         outPredecessorsList.insertAtEnd(i);
                         break;
                     }
@@ -101,7 +105,7 @@ DoublyLinkedList<int> MatrixGraph::getVertexPredecessors(int vertexID) const {
     return outPredecessorsList;
 }
 
-DoublyLinkedList<Edge> MatrixGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
+DoublyLinkedList<Edge> MatrixGraph::getEdgeParameters(int startVertexID, int endVertexID) const {
     DoublyLinkedList<int> edges = this->getEdgeIdsFromVertexes(startVertexID, endVertexID);
     DoublyLinkedList<Edge> combinedEdges;
     for (DoublyLinkedList<int>::Iterator it = edges.getIterator(); it != edges.getEndIt(); ++it) {
@@ -132,6 +136,7 @@ double MatrixGraph::getDensity() const {
 
 std::string MatrixGraph::toString() const {
     std::ostringstream graphString;
+    int lastEdgeIdx = this->getEdgeCount() - 1;
     graphString << "Incidence matrix:" << std::endl << std::endl;
     graphString << std::setw(6) << "V\\E ";
     for (int j = 0; j < this->getEdgeCount(); ++j) {
@@ -143,7 +148,10 @@ std::string MatrixGraph::toString() const {
         for (int j = 0; j < this->getEdgeCount() - 1; ++j) {
             graphString << std::setw(4) << incidenceMatrix[i][j] << ',';
         }
-        graphString << std::setw(4) << incidenceMatrix[i][this->getEdgeCount() - 1] << ']' << std::endl;
+        if (lastEdgeIdx >= 0) {
+            graphString << std::setw(4) << incidenceMatrix[i][lastEdgeIdx];
+        }
+        graphString << ']' << std::endl;
     }
 
     graphString << std::endl << "Weight\\Flow table:" << std::endl << std::endl;
@@ -159,9 +167,12 @@ std::string MatrixGraph::toString() const {
                      "*" : std::to_string(edgeParameters[j]))
                     << ',';
     }
-    graphString << std::setw(4)
-                << ((edgeParameters[this->getEdgeCount() - 1] == std::numeric_limits<int>::max()) ?
-                    "*" : std::to_string(edgeParameters[this->getEdgeCount() - 1])) << ']' << std::endl;
+    if (lastEdgeIdx >= 0) {
+        graphString << std::setw(4)
+                    << ((edgeParameters[this->getEdgeCount() - 1] == std::numeric_limits<int>::max()) ?
+                        "*" : std::to_string(edgeParameters[this->getEdgeCount() - 1]));
+    }
+    graphString << ']' << std::endl;
 
     return graphString.str();
 }
