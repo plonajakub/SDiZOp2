@@ -13,20 +13,26 @@ class MatrixGraph {
 
 public:
 
-
     enum GraphType {
         Directed, Undirected
+    };
+
+    class Edge {
+    public:
+        Edge (int edgeID, int parameter) : edgeID(edgeID), parameter(parameter) {}
+        int edgeID;
+        int parameter;
     };
 
     MatrixGraph(GraphType graphType, int nVertex);
 
     inline void addVertex();
 
-    void removeVertex(int vertexID);
+//    void removeVertex(int vertexID);
 
-    void addEdge(int startVertexID, int endVertexID, int weight_flow);
+    void addEdge(int startVertexID, int endVertexID, int edgeParameter);
 
-    void removeEdge(int startVertexID, int endVertexID);
+    void removeEdges(int startVertexID, int endVertexID);
 
     void removeEdge(int edgeID);
 
@@ -34,21 +40,21 @@ public:
 
     void getVertexPredecessors(int vertexID, DoublyLinkedList<int> &outPredecessorsList) const;
 
-    int getEdgeIdFromVertexes(int startVertexID, int endVertexID) const;
+    DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
 
     // Table[0]: startVertexID
     // Table[1]: endVertexID
     Table<int> getVertexIdsFromEdge(int edgeID) const;
 
-    int getEdgeWeight(int startVertexID, int endVertexID) const;
+    inline DoublyLinkedList<Edge> getEdgeParameter(int startVertexID, int endVertexID) const;
 
-    int getEdgeWeight(int edgeID) const;
+    inline int getEdgeParameter(int edgeID) const;
 
-    int getVertexCount() const;
+    inline int getVertexCount() const;
 
-    int getEdgeCount() const;
+    inline int getEdgeCount() const;
 
-    double getDensity() const;
+    inline double getDensity() const;
 
     std::string toString() const;
 
@@ -63,7 +69,8 @@ private:
 
     Table<Table<int>> incidenceMatrix;
 
-    Table<Table<int>> weightMatrix;
+    // Weight or flow
+    Table<int> edgeParameters;
 
 };
 

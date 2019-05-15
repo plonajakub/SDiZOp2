@@ -6,6 +6,7 @@
 #include <iostream>
 #include <exception>
 
+#include "MatrixGraph.h"
 
 // Represents single node of the list
 template <class T>
@@ -131,6 +132,6 @@ std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<T> &dll);
 
 template class DoublyLinkedList<int>;
 template class DoublyLinkedList<DoublyLinkedList<int>>;
-
+template class DoublyLinkedList<MatrixGraph::Edge>;
 
 #endif //SDIZO_P1_DOUBLYLINKEDLIST_H
