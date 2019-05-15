@@ -1,6 +1,7 @@
 #ifndef SDIZO_P1_TABLE_H
 #define SDIZO_P1_TABLE_H
 
+
 #include <iostream>
 #include <exception>
 #include <string>
@@ -85,7 +86,5 @@ private:
 template <class T>
 std::ostream &operator<<(std::ostream &ostr, const Table<T> &table);
 
-template class Table<int>;
-template class Table<Table<int>>;
 
 #endif //SDIZO_P1_TABLE_H

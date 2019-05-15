@@ -298,4 +298,6 @@ std::ostream &operator<<(std::ostream &ostr, const Table<T> &table) {
     return ostr;
 }
 
+template class Table<int>;
+template class Table<Table<int>>;
 template std::ostream &operator<<(std::ostream &ostr, const Table<int> &table);

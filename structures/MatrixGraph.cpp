@@ -15,16 +15,12 @@ void MatrixGraph::addVertex() {
     }
 }
 
-// TODO removeVertex()
-//void MatrixGraph::removeVertex(int vertexID) {
-//    throw std::exception();
-//}
-
 void MatrixGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
     int vertexCount = this->getVertexCount();
     for (int i = 0; i < vertexCount; ++i) {
         incidenceMatrix[i].insertAtEnd(0);
     }
+    edgeParameters.insertAtEnd(edgeParameter);
 
     int lastEdgeIdx = this->getEdgeCount() - 1;
     incidenceMatrix[startVertexID][lastEdgeIdx] = 1;
@@ -34,7 +30,7 @@ void MatrixGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter)
         incidenceMatrix[endVertexID][lastEdgeIdx] = -1;
     }
 
-    edgeParameters.insertAtEnd(edgeParameter);
+
 }
 
 void MatrixGraph::removeEdges(int startVertexID, int endVertexID) {
@@ -53,43 +49,59 @@ void MatrixGraph::removeEdge(int edgeID) {
     edgeParameters.remove(edgeID);
 }
 
-void MatrixGraph::getVertexSuccessors(int vertexID, DoublyLinkedList<int> &outSuccessorsList) const {
+DoublyLinkedList<int> MatrixGraph::getVertexSuccessors(int vertexID) const {
+    DoublyLinkedList<int> outSuccessorsList;
     int edgeCount = this->getEdgeCount();
     int vertexCount = this->getVertexCount();
     for (int j = 0; j < edgeCount; ++j) {
         if (incidenceMatrix[vertexID][j] == 1) {
             for (int i = 0; i < vertexCount; ++i) {
                 if (this->TYPE == GraphType::Directed) {
-                    if (incidenceMatrix[i][j] == -1)
+                    if (incidenceMatrix[i][j] == -1) {
                         outSuccessorsList.insertAtEnd(i);
+                        break;
+                    }
                 } else {
-                    if (i != vertexID && incidenceMatrix[i][j] == 1)
+                    if (i != vertexID && incidenceMatrix[i][j] == 1) {
                         outSuccessorsList.insertAtEnd(i);
+                        break;
+                    }
                 }
             }
         }
     }
+    return outSuccessorsList;
 }
 
-void MatrixGraph::getVertexPredecessors(int vertexID, DoublyLinkedList<int> &outPredecessorsList) const {
+DoublyLinkedList<int> MatrixGraph::getVertexPredecessors(int vertexID) const {
+    DoublyLinkedList<int> outPredecessorsList;
     int edgeCount = this->getEdgeCount();
     int vertexCount = this->getVertexCount();
     for (int j = 0; j < edgeCount; ++j) {
-//        if (incidenceMatrix[vertexID][j] == -1) {
-//            for (int i = 0; i < vertexCount; ++i) {
-//                if (this->TYPE == GraphType::Directed) {
-//                    if (incidenceMatrix[i][j] == -1)
-//                        outSuccessorsList.insertAtEnd(i);
-//                } else {
-//                    if (i != vertexID && incidenceMatrix[i][j] == 1)
-//                        outSuccessorsList.insertAtEnd(i);
-//                }
-//            }
-//        }
+        if (this->TYPE == GraphType::Directed) {
+            if (incidenceMatrix[vertexID][j] == -1) {
+                for (int i = 0; i < vertexCount; ++i) {
+                    if (incidenceMatrix[i][j] == 1) {
+                        outPredecessorsList.insertAtEnd(i);
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (incidenceMatrix[vertexID][j] == 1) {
+                for (int i = 0; i < vertexCount; ++i) {
+                    if (i != vertexID && incidenceMatrix[i][j] == 1) {
+                        outPredecessorsList.insertAtEnd(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
+    return outPredecessorsList;
 }
 
-DoublyLinkedList<MatrixGraph::Edge> MatrixGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
+DoublyLinkedList<Edge> MatrixGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
     DoublyLinkedList<int> edges = this->getEdgeIdsFromVertexes(startVertexID, endVertexID);
     DoublyLinkedList<Edge> combinedEdges;
     for (DoublyLinkedList<int>::Iterator it = edges.getIterator(); it != edges.getEndIt(); ++it) {
@@ -135,12 +147,12 @@ std::string MatrixGraph::toString() const {
     }
 
     graphString << std::endl << "Weight\\Flow table:" << std::endl << std::endl;
-    graphString << std::setw(6) << "E";
+    graphString << std::setw(4) << "E" << std::string(2, ' ');
     for (int j = 0; j < this->getEdgeCount(); ++j) {
         graphString << std::setw(4) << j << ',';
     }
     graphString << std::endl;
-    graphString << std::setw(3) << "[";
+    graphString << std::setw(6) << "[";
     for (int j = 0; j < this->getEdgeCount() - 1; ++j) {
         graphString << std::setw(4) <<
                     ((edgeParameters[j] == std::numeric_limits<int>::max()) ?
@@ -173,8 +185,9 @@ DoublyLinkedList<int> MatrixGraph::getEdgeIdsFromVertexes(int startVertexID, int
 
 Table<int> MatrixGraph::getVertexIdsFromEdge(int edgeID) const {
     Table<int> vertexes;
-    vertexes.insertAtEnd(VERTEX_NOT_PRESENT); // startVertexID
-    vertexes.insertAtEnd(VERTEX_NOT_PRESENT); // endVertexID
+    int vertexValue = VERTEX_NOT_PRESENT;
+    vertexes.insertAtEnd(vertexValue); // startVertexID
+    vertexes.insertAtEnd(vertexValue); // endVertexID
     int vertexInsertIdx = 0;
     for (int i = 0; i < this->getVertexCount() &&
                     (vertexes[0] == VERTEX_NOT_PRESENT || vertexes[1] == VERTEX_NOT_PRESENT); ++i) {
@@ -191,6 +204,10 @@ Table<int> MatrixGraph::getVertexIdsFromEdge(int edgeID) const {
         }
     }
     return vertexes;
+}
+
+bool MatrixGraph::isVertexPartOfEdge(int vertexID, int edgeID) const {
+    return incidenceMatrix[vertexID][edgeID] != 0;
 }
 
 std::ostream &operator<<(std::ostream &ostr, const MatrixGraph &matrixGraph) {

@@ -219,6 +219,24 @@ std::string DoublyLinkedList<DoublyLinkedList<int>>::toString() const {
     return strDll;
 }
 
+// TODO DoublyLinkedList<Edge>::toString() to be implemented
+template  <>
+std::string DoublyLinkedList<Edge>::toString() const {
+    std::string strDll;
+    strDll.append("[");
+    Node<Edge> *it = sentry->next;
+    while (!it->next->isSentry) {
+        strDll.append("NOT IMPLEMENTED");
+        strDll.append(", ");
+        it = it->next;
+    }
+    if (size != 0) {
+        strDll.append("NOT IMPLEMENTED");
+    }
+    strDll.append("]");
+    return strDll;
+}
+
 template <class T>
 int DoublyLinkedList<T>::getSize() const {
     return size;
@@ -268,4 +286,7 @@ std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<T> &dll) {
     return ostr;
 }
 
+template class DoublyLinkedList<int>;
+template class DoublyLinkedList<DoublyLinkedList<int>>;
+template class DoublyLinkedList<Edge>;
 template std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<int> &table);

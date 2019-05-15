@@ -1,6 +1,7 @@
 #ifndef SDIZOP2_MATRIXGRAPH_H
 #define SDIZOP2_MATRIXGRAPH_H
 
+
 #include <iostream>
 #include <limits>
 #include <sstream>
@@ -8,6 +9,8 @@
 
 #include "Table.h"
 #include "DoublyLinkedList.h"
+#include "Edge.h"
+
 
 class MatrixGraph {
 
@@ -17,38 +20,29 @@ public:
         Directed, Undirected
     };
 
-    class Edge {
-    public:
-        Edge (int edgeID, int parameter) : edgeID(edgeID), parameter(parameter) {}
-        int edgeID;
-        int parameter;
-    };
-
     MatrixGraph(GraphType graphType, int nVertex);
-
-    inline void addVertex();
-
-//    void removeVertex(int vertexID);
 
     void addEdge(int startVertexID, int endVertexID, int edgeParameter);
 
-    void removeEdges(int startVertexID, int endVertexID);
-
     void removeEdge(int edgeID);
 
-    void getVertexSuccessors(int vertexID, DoublyLinkedList<int> &outSuccessorsList) const;
+    void removeEdges(int startVertexID, int endVertexID);
 
-    void getVertexPredecessors(int vertexID, DoublyLinkedList<int> &outPredecessorsList) const;
+    DoublyLinkedList<int> getVertexSuccessors(int vertexID) const;
+
+    DoublyLinkedList<int> getVertexPredecessors(int vertexID) const;
 
     DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
+
+    DoublyLinkedList<Edge> getEdgeParameter(int startVertexID, int endVertexID) const;
+
+    inline int getEdgeParameter(int edgeID) const;
 
     // Table[0]: startVertexID
     // Table[1]: endVertexID
     Table<int> getVertexIdsFromEdge(int edgeID) const;
 
-    inline DoublyLinkedList<Edge> getEdgeParameter(int startVertexID, int endVertexID) const;
-
-    inline int getEdgeParameter(int edgeID) const;
+    inline bool isVertexPartOfEdge(int vertexID, int edgeID) const;
 
     inline int getVertexCount() const;
 
@@ -60,10 +54,11 @@ public:
 
     static const int EDGE_NOT_PRESENT = -2;
 
-    // TODO cannot link with static
-    const int VERTEX_NOT_PRESENT = -1;
+    static const int VERTEX_NOT_PRESENT = -1;
 
 private:
+
+    void addVertex();
 
     const GraphType TYPE;
 
@@ -75,5 +70,6 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &ostr, const MatrixGraph &matrixGraph);
+
 
 #endif //SDIZOP2_MATRIXGRAPH_H
