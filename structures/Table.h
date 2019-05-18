@@ -6,6 +6,8 @@
 #include <exception>
 #include <string>
 
+#include "QueueNode.h"
+
 template <class T>
 class Table {
 

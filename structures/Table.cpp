@@ -239,6 +239,22 @@ std::string Table<Table<int>>::toString() const {
     return strTable;
 }
 
+// TODO Table<QueueNode<int>>::toString() to be implemented
+template <>
+std::string Table<QueueNode<int>>::toString() const {
+    std::string strTable;
+    strTable.append("[");
+    for (int i = 0; i < size - 1; ++i) {
+        strTable.append("NOT IMPLEMENTED");
+        strTable.append(", ");
+    }
+    if (size != 0) {
+        strTable.append("NOT IMPLEMENTED");
+    }
+    strTable.append("]");
+    return strTable;
+}
+
 template <class T>
 T &Table<T>::operator[](int index) {
     if (index >= size || index < 0) {
@@ -300,4 +316,5 @@ std::ostream &operator<<(std::ostream &ostr, const Table<T> &table) {
 
 template class Table<int>;
 template class Table<Table<int>>;
+template class Table<QueueNode<int>>;
 template std::ostream &operator<<(std::ostream &ostr, const Table<int> &table);
