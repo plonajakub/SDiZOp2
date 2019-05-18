@@ -7,6 +7,7 @@
 #include <string>
 
 #include "QueueNode.h"
+#include "DoublyLinkedList.h"
 
 template <class T>
 class Table {

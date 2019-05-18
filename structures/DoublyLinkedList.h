@@ -93,6 +93,7 @@ public:
     void removeFromEnd();
 
     // Removes node with data equal to value
+    // If value does not exist on the list, this method has no effect
     void removeByValue(const T &value);
 
     // Performs linear search on the list and returns value's index

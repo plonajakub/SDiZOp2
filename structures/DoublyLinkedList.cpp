@@ -163,7 +163,11 @@ void DoublyLinkedList<T>::removeFromEnd() {
 
 template <class T>
 void DoublyLinkedList<T>::removeByValue(const T &value) {
-    this->remove(this->search(value));
+    try {
+        this->remove(this->search(value));
+    } catch (std::out_of_range &e) {
+        // No action: value does not exist in the list
+    }
 }
 
 template <class T>
