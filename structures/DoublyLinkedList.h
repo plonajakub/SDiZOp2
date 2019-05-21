@@ -109,6 +109,8 @@ public:
     // Returns list's size
     int getSize() const;
 
+    bool isEmpty() const;
+
     Iterator getIterator() const;
 
     Iterator getEndIt();

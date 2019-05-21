@@ -6,35 +6,30 @@
 #include <limits>
 #include <sstream>
 #include <iomanip>
+#include <stdexcept>
 
+#include "IGraph.h"
 #include "Table.h"
 #include "DoublyLinkedList.h"
 #include "Edge.h"
 
 
-class MatrixGraph {
-
+class MatrixGraph : public IGraph {
 public:
-
-    enum GraphType {
-        Directed, Undirected
-    };
 
     MatrixGraph(GraphType graphType, int nVertex);
 
-    void addEdge(int startVertexID, int endVertexID, int edgeParameter);
+    void addEdge(int startVertexID, int endVertexID, int edgeParameter) override;
 
     void removeEdge(int edgeID);
 
-    void removeEdges(int startVertexID, int endVertexID);
+    void removeEdges(int startVertexID, int endVertexID) override;
 
-    DoublyLinkedList<int> getVertexSuccessors(int vertexID) const;
+    DoublyLinkedList<int> getVertexSuccessors(int vertexID) const override;
 
-    DoublyLinkedList<int> getVertexPredecessors(int vertexID) const;
+    DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;
 
-    DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
-
-    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const;
+    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const override;
 
     int getEdgeParameter(int edgeID) const;
 
@@ -42,15 +37,18 @@ public:
     // Table[1]: endVertexID
     Table<int> getVertexIdsFromEdge(int edgeID) const;
 
+    // Returned list is sorted
+    DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
+
     bool isVertexPartOfEdge(int vertexID, int edgeID) const;
 
-    int getVertexCount() const;
+    int getVertexCount() const override;
 
-    int getEdgeCount() const;
+    int getEdgeCount() const override;
 
-    double getDensity() const;
+    double getDensity() const override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
     static const int EDGE_NOT_PRESENT = -2;
 
@@ -58,7 +56,7 @@ public:
 
 private:
 
-    void addVertex();
+    void addVertex() override;
 
     const GraphType TYPE;
 
@@ -69,8 +67,6 @@ private:
 
     friend class MatrixGraphTest;
 };
-
-std::ostream &operator<<(std::ostream &ostr, const MatrixGraph &matrixGraph);
 
 
 #endif //SDIZOP2_MATRIXGRAPH_H

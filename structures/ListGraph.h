@@ -4,42 +4,40 @@
 #include <limits>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
 
+#include "IGraph.h"
 #include "Table.h"
 #include "DoublyLinkedList.h"
 
 
 // Loops and multiple edges disallowed
-class ListGraph {
+class ListGraph : public IGraph {
 public:
-
-    enum GraphType {
-        Directed, Undirected
-    };
 
     ListGraph(GraphType graphType, int nVertex);
 
-    void addEdge(int startVertexID, int endVertexID, int edgeParameter);
+    void addEdge(int startVertexID, int endVertexID, int edgeParameter) override;
 
-    void removeEdges(int startVertexID, int endVertexID);
+    void removeEdges(int startVertexID, int endVertexID) override;
 
-    DoublyLinkedList<int> getVertexSuccessors(int vertexID) const;
+    DoublyLinkedList<int> getVertexSuccessors(int vertexID) const override;
 
-    DoublyLinkedList<int> getVertexPredecessors(int vertexID) const;
+    DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;
 
-    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const;
+    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const override;
 
-    int getVertexCount() const;
+    int getVertexCount() const override;
 
-    int getEdgeCount() const;
+    int getEdgeCount() const override;
 
-    double getDensity() const;
+    double getDensity() const override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
 
-    void addVertex();
+    void addVertex() override;
 
     const GraphType TYPE;
 
@@ -52,7 +50,5 @@ private:
 
     friend class ListGraphTest;
 };
-
-std::ostream &operator<<(std::ostream &ostr, const ListGraph &listGraph);
 
 #endif //SDIZOP2_LISTGRAPH_H

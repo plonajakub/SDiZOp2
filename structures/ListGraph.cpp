@@ -1,6 +1,9 @@
 #include "ListGraph.h"
 
 ListGraph::ListGraph(ListGraph::GraphType graphType, int nVertex) : TYPE(graphType), edgeCount(0) {
+    if (nVertex < 1) {
+        throw std::invalid_argument("ListGraph() error: graph must have at least one vertex");
+    }
     for (int i = 0; i < nVertex; ++i) {
         this->addVertex();
     }
@@ -21,6 +24,19 @@ void ListGraph::addVertex() {
 }
 
 void ListGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
+    if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
+        endVertexID >= this->getVertexCount()) {
+        throw std::invalid_argument("addEdge() error: invalid vertex's index");
+    }
+    if (startVertexID == endVertexID) {
+        throw std::invalid_argument("addEdge() error: loops are disallowed");
+    }
+    // Multiple edges are not represented in this graph's structure
+    if (this->getEdgeParameters(startVertexID, endVertexID).getIterator().getData().parameter !=
+        std::numeric_limits<int>::max()) {
+        throw std::invalid_argument("addEdge() error: multiple edges are disallowed");
+    }
+
     successorsLists[startVertexID].insertAtEnd(endVertexID);
     parametersMatrix[startVertexID][endVertexID] = edgeParameter;
     if (this->TYPE == GraphType::Undirected) {
@@ -31,6 +47,15 @@ void ListGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
 }
 
 void ListGraph::removeEdges(int startVertexID, int endVertexID) {
+    if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
+        endVertexID >= this->getVertexCount()) {
+        throw std::invalid_argument("removeEdge() error: wrong vertex's index");
+    }
+    if (this->getEdgeParameters(startVertexID, endVertexID).getIterator().getData().parameter ==
+        std::numeric_limits<int>::max()) {
+        throw std::invalid_argument("addEdge() error: described edge does not exist");
+    }
+
     successorsLists[startVertexID].removeByValue(endVertexID);
     parametersMatrix[startVertexID][endVertexID] = std::numeric_limits<int>::max();
     if (this->TYPE == GraphType::Undirected) {
@@ -88,7 +113,7 @@ std::string ListGraph::toString() const {
     graphString << "Successors lists:" << std::endl << std::endl;
     graphString << std::setw(3) << "V" << std::endl;
     for (int i = 0; i < vertexCount; ++i) {
-        graphString << std::setw(3) << i  << ": " << std::setw(2) << successorsLists[i].toString() << std::endl;
+        graphString << std::setw(3) << i << ": " << std::setw(2) << successorsLists[i].toString() << std::endl;
     }
     graphString << std::endl;
 
@@ -100,18 +125,16 @@ std::string ListGraph::toString() const {
     graphString << std::endl;
     for (int i = 0; i < vertexCount; ++i) {
         graphString << std::setw(3) << std::to_string(i) << std::setw(3) << "[";
-        for (int j = 0; j < vertexCount; ++j) {
+        for (int j = 0; j < vertexCount - 1; ++j) {
             graphString << std::setw(4) <<
                         ((parametersMatrix[i][j] == std::numeric_limits<int>::max()) ? "*" : std::to_string(
                                 parametersMatrix[i][j]))
                         << ',';
         }
+        graphString << std::setw(4) <<
+                    ((parametersMatrix[i][vertexCount - 1] == std::numeric_limits<int>::max()) ? "*" : std::to_string(
+                            parametersMatrix[i][vertexCount - 1]));
         graphString << ']' << std::endl;
     }
     return graphString.str();
-}
-
-std::ostream &operator<<(std::ostream &ostr, const ListGraph &listGraph) {
-    ostr << listGraph.toString();
-    return ostr;
 }

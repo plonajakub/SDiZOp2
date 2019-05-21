@@ -1,6 +1,9 @@
 #include "MatrixGraph.h"
 
 MatrixGraph::MatrixGraph(GraphType graphType, int nVertex) : TYPE(graphType) {
+    if (nVertex < 1) {
+        throw std::invalid_argument("ListGraph() error: graph must have at least one vertex");
+    }
     for (int i = 0; i < nVertex; ++i) {
         this->addVertex();
     }
@@ -16,6 +19,19 @@ void MatrixGraph::addVertex() {
 }
 
 void MatrixGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
+    if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
+        endVertexID >= this->getVertexCount()) {
+        throw std::invalid_argument("addEdge() error: invalid vertex's index");
+    }
+    if (startVertexID == endVertexID) {
+        throw std::invalid_argument("addEdge() error: loops are disallowed");
+    }
+//    // Multiple edges are not represented in this graph's structure
+//    if (this->getEdgeParameters(startVertexID, endVertexID).getIterator().getData().parameter !=
+//        std::numeric_limits<int>::max()) {
+//        throw std::invalid_argument("addEdge() error: multiple edges are disallowed");
+//    }
+
     int vertexCount = this->getVertexCount();
     for (int i = 0; i < vertexCount; ++i) {
         incidenceMatrix[i].insertAtEnd(0);
@@ -23,28 +39,41 @@ void MatrixGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter)
     edgeParameters.insertAtEnd(edgeParameter);
 
     int lastEdgeIdx = this->getEdgeCount() - 1;
-    incidenceMatrix[startVertexID][lastEdgeIdx] = 1;
-    if (this->TYPE == GraphType::Undirected) {
+    incidenceMatrix[startVertexID][lastEdgeIdx] = 1; // beginning of the edge
+    if (this->TYPE == GraphType::Undirected) { // end of the edge
         incidenceMatrix[endVertexID][lastEdgeIdx] = 1;
     } else {
         incidenceMatrix[endVertexID][lastEdgeIdx] = -1;
     }
-
-
 }
 
 void MatrixGraph::removeEdges(int startVertexID, int endVertexID) {
-    // Edges must be sorted
+    if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
+        endVertexID >= this->getVertexCount()) {
+        throw std::invalid_argument("removeEdge() error: invalid vertex's index");
+    }
+
+    DoublyLinkedList<Edge> eList = this->getEdgeParameters(startVertexID, endVertexID);
+    if (eList.isEmpty()) {
+        throw std::invalid_argument("removeEdge() error: described edge does not exist");
+    }
+
     DoublyLinkedList<int> edges = this->getEdgeIdsFromVertexes(startVertexID, endVertexID);
     for (DoublyLinkedList<int>::Iterator it = edges.getIterator(); it != edges.getEndIt(); ++it) {
         this->removeEdge(it.getData());
-        for (DoublyLinkedList<int>::Iterator eit = edges.getIterator(); eit != edges.getEndIt(); ++eit) {
+        DoublyLinkedList<int>::Iterator eit = it;
+        ++eit;
+        for (; eit != edges.getEndIt(); ++eit) {
             --eit.getData();
         }
     }
 }
 
 void MatrixGraph::removeEdge(int edgeID) {
+    if (edgeID < 0 || edgeID >= this->getEdgeCount()) {
+        throw std::invalid_argument("removeEdge() error: invalid edgeID");
+    }
+
     int vertexCount = this->getVertexCount();
     for (int i = 0; i < vertexCount; ++i) {
         incidenceMatrix[i].remove(edgeID);
@@ -221,7 +250,4 @@ bool MatrixGraph::isVertexPartOfEdge(int vertexID, int edgeID) const {
     return incidenceMatrix[vertexID][edgeID] != 0;
 }
 
-std::ostream &operator<<(std::ostream &ostr, const MatrixGraph &matrixGraph) {
-    ostr << matrixGraph.toString();
-    return ostr;
-}
+

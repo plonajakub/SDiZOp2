@@ -294,6 +294,11 @@ bool DoublyLinkedList<T>::contains(const T &data) const {
     return false;
 }
 
+template<class T>
+bool DoublyLinkedList<T>::isEmpty() const {
+    return size == 0;
+}
+
 template <class T>
 std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<T> &dll) {
     ostr << dll.toString();
