@@ -25,6 +25,8 @@ public:
 
     void removeEdge(int startVertexID, int endVertexID) override;
 
+    DoublyLinkedList<int> getVertexes() const override;
+
     DoublyLinkedList<int> getVertexSuccessors(int vertexID) const override;
 
     DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;

@@ -192,3 +192,4 @@ int HeapPriorityQueue<T>::getSize() const {
 //}
 
 template class HeapPriorityQueue<int>;
+template class HeapPriorityQueue<Edge>;

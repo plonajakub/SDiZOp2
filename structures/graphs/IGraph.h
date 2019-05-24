@@ -27,6 +27,8 @@ public:
 
     virtual DoublyLinkedList<int> getVertexPredecessors(int vertexID) const = 0;
 
+    virtual DoublyLinkedList<int> getVertexes() const = 0;
+
     virtual int getEdgeParameter(int startVertexID, int endVertexID) const = 0;
 
     virtual int getVertexCount() const = 0;

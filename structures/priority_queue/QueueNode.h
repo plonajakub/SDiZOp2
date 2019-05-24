@@ -1,6 +1,7 @@
 #ifndef SDIZOP2_QUEUENODE_H
 #define SDIZOP2_QUEUENODE_H
 
+#include "../graphs/misc/Edge.h"
 
 template<class T>
 class QueueNode {

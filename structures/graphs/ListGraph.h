@@ -25,6 +25,8 @@ public:
 
     DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;
 
+    DoublyLinkedList<int> getVertexes() const override;
+
     int getEdgeParameter(int startVertexID, int endVertexID) const override;
 
     int getVertexCount() const override;

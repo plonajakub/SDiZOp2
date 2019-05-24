@@ -67,6 +67,15 @@ void ListGraph::removeEdge(int startVertexID, int endVertexID) {
     --edgeCount;
 }
 
+DoublyLinkedList<int> ListGraph::getVertexes() const {
+    DoublyLinkedList<int> vertexes;
+    int vertexCount = this->getVertexCount();
+    for (int i = 0; i < vertexCount; ++i) {
+        vertexes.insertAtEnd(i);
+    }
+    return vertexes;
+}
+
 //ok
 DoublyLinkedList<int> ListGraph::getVertexSuccessors(int vertexID) const {
     return successorsLists[vertexID];
@@ -103,6 +112,7 @@ int ListGraph::getEdgeCount() const {
     return edgeCount;
 }
 
+
 //ok
 double ListGraph::getDensity() const {
     int vertexCount = this->getVertexCount();
@@ -112,7 +122,6 @@ double ListGraph::getDensity() const {
         return static_cast<double>(edgeCount) / ((vertexCount * (vertexCount - 1)) / 2);
     }
 }
-
 
 std::string ListGraph::toString() const {
     std::stringstream graphString;

@@ -8,6 +8,7 @@
 
 #include "priority_queue/QueueNode.h"
 #include "DoublyLinkedList.h"
+#include "graphs/misc/Edge.h"
 
 template <class T>
 class Table {

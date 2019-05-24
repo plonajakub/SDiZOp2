@@ -299,6 +299,14 @@ bool DoublyLinkedList<T>::isEmpty() const {
     return size == 0;
 }
 
+template<class T>
+T DoublyLinkedList<T>::getLast() const {
+    if (sentry->prev->isSentry) {
+        throw std::invalid_argument("getLast() error: list is empty");
+    }
+    return sentry->prev->data;
+}
+
 template <class T>
 std::ostream &operator<<(std::ostream &ostr, const DoublyLinkedList<T> &dll) {
     ostr << dll.toString();

@@ -9,6 +9,7 @@
 
 #include "QueueNode.h"
 #include "../Table.h"
+#include "../graphs/misc/Edge.h"
 
 template <class T>
 class HeapPriorityQueue {
@@ -71,5 +72,4 @@ private:
 
 //// Declared for convenience
 //std::ostream &operator<<(std::ostream &ostr, const HeapPriorityQueue &heap);
-
 #endif //SDIZO_P1_HEAP_H

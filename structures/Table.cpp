@@ -255,6 +255,22 @@ std::string Table<QueueNode<int>>::toString() const {
     return strTable;
 }
 
+// TODO Table<QueueNode<Edge>>::toString() to be implemented
+template <>
+std::string Table<QueueNode<Edge>>::toString() const {
+    std::string strTable;
+    strTable.append("[");
+    for (int i = 0; i < size - 1; ++i) {
+        strTable.append("NOT IMPLEMENTED");
+        strTable.append(", ");
+    }
+    if (size != 0) {
+        strTable.append("NOT IMPLEMENTED");
+    }
+    strTable.append("]");
+    return strTable;
+}
+
 // TODO Table<DoublyLinkedList<int>>::toString() to be implemented
 template <>
 std::string Table<DoublyLinkedList<int>>::toString() const {
@@ -333,5 +349,6 @@ std::ostream &operator<<(std::ostream &ostr, const Table<T> &table) {
 template class Table<int>;
 template class Table<Table<int>>;
 template class Table<QueueNode<int>>;
+template class Table<QueueNode<Edge>>;
 template class Table<DoublyLinkedList<int>>;
 template std::ostream &operator<<(std::ostream &ostr, const Table<int> &table);

@@ -100,6 +100,8 @@ public:
     // If value does not exist VALUE_NOT_FOUND is returned
     int search(const T &value) const;
 
+    T getLast() const;
+
     bool operator==(const DoublyLinkedList<T> &otherList) const;
 
     bool operator!=(const DoublyLinkedList<T> &otherList) const;
