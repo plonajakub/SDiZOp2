@@ -23,13 +23,13 @@ public:
 
     void removeEdge(int edgeID);
 
-    void removeEdges(int startVertexID, int endVertexID) override;
+    void removeEdge(int startVertexID, int endVertexID) override;
 
     DoublyLinkedList<int> getVertexSuccessors(int vertexID) const override;
 
     DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;
 
-    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const override;
+    int getEdgeParameter(int startVertexID, int endVertexID) const override;
 
     int getEdgeParameter(int edgeID) const;
 
@@ -38,7 +38,7 @@ public:
     Table<int> getVertexIdsFromEdge(int edgeID) const;
 
     // Returned list is sorted
-    DoublyLinkedList<int> getEdgeIdsFromVertexes(int startVertexID, int endVertexID) const;
+    int getEdgeIdFromVertexes(int startVertexID, int endVertexID) const;
 
     bool isVertexPartOfEdge(int vertexID, int edgeID) const;
 

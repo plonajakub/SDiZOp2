@@ -19,13 +19,13 @@ public:
 
     void addEdge(int startVertexID, int endVertexID, int edgeParameter) override;
 
-    void removeEdges(int startVertexID, int endVertexID) override;
+    void removeEdge(int startVertexID, int endVertexID) override;
 
     DoublyLinkedList<int> getVertexSuccessors(int vertexID) const override;
 
     DoublyLinkedList<int> getVertexPredecessors(int vertexID) const override;
 
-    DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const override;
+    int getEdgeParameter(int startVertexID, int endVertexID) const override;
 
     int getVertexCount() const override;
 

@@ -1,5 +1,6 @@
 #include "ListGraph.h"
 
+//ok
 ListGraph::ListGraph(ListGraph::GraphType graphType, int nVertex) : TYPE(graphType), edgeCount(0) {
     if (nVertex < 1) {
         throw std::invalid_argument("ListGraph() error: graph must have at least one vertex");
@@ -9,6 +10,7 @@ ListGraph::ListGraph(ListGraph::GraphType graphType, int nVertex) : TYPE(graphTy
     }
 }
 
+//ok
 void ListGraph::addVertex() {
     successorsLists.insertAtEnd(DoublyLinkedList<int>());
 
@@ -23,6 +25,7 @@ void ListGraph::addVertex() {
     }
 }
 
+//ok
 void ListGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
     if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
         endVertexID >= this->getVertexCount()) {
@@ -32,8 +35,7 @@ void ListGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
         throw std::invalid_argument("addEdge() error: loops are disallowed");
     }
     // Multiple edges are not represented in this graph's structure
-    if (this->getEdgeParameters(startVertexID, endVertexID).getIterator().getData().parameter !=
-        std::numeric_limits<int>::max()) {
+    if (this->getEdgeParameter(startVertexID, endVertexID) != std::numeric_limits<int>::max()) {
         throw std::invalid_argument("addEdge() error: multiple edges are disallowed");
     }
 
@@ -46,13 +48,13 @@ void ListGraph::addEdge(int startVertexID, int endVertexID, int edgeParameter) {
     ++edgeCount;
 }
 
-void ListGraph::removeEdges(int startVertexID, int endVertexID) {
+//ok
+void ListGraph::removeEdge(int startVertexID, int endVertexID) {
     if (startVertexID < 0 || startVertexID >= this->getVertexCount() || endVertexID < 0 ||
         endVertexID >= this->getVertexCount()) {
         throw std::invalid_argument("removeEdge() error: wrong vertex's index");
     }
-    if (this->getEdgeParameters(startVertexID, endVertexID).getIterator().getData().parameter ==
-        std::numeric_limits<int>::max()) {
+    if (this->getEdgeParameter(startVertexID, endVertexID) == std::numeric_limits<int>::max()) {
         throw std::invalid_argument("addEdge() error: described edge does not exist");
     }
 
@@ -65,10 +67,12 @@ void ListGraph::removeEdges(int startVertexID, int endVertexID) {
     --edgeCount;
 }
 
+//ok
 DoublyLinkedList<int> ListGraph::getVertexSuccessors(int vertexID) const {
     return successorsLists[vertexID];
 }
 
+//ok
 DoublyLinkedList<int> ListGraph::getVertexPredecessors(int vertexID) const {
     if (this->TYPE == GraphType::Directed) {
         DoublyLinkedList<int> predecessors;
@@ -84,24 +88,31 @@ DoublyLinkedList<int> ListGraph::getVertexPredecessors(int vertexID) const {
     }
 }
 
-DoublyLinkedList<Edge> ListGraph::getEdgeParameters(int startVertexID, int endVertexID) const {
-    DoublyLinkedList<Edge> edges;
-    Edge edge(0, parametersMatrix[startVertexID][endVertexID]);
-    edges.insertAtEnd(edge);
-    return edges;
+//ok
+int ListGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
+    return parametersMatrix[startVertexID][endVertexID];
 }
 
+//ok
 int ListGraph::getVertexCount() const {
     return successorsLists.getSize();
 }
 
+//ok
 int ListGraph::getEdgeCount() const {
-    return this->edgeCount;
+    return edgeCount;
 }
 
+//ok
 double ListGraph::getDensity() const {
-    return getEdgeCount() / static_cast<double>(this->getVertexCount());
+    int vertexCount = this->getVertexCount();
+    if (this->TYPE == GraphType::Directed) {
+        return static_cast<double>(edgeCount) / (vertexCount * (vertexCount - 1));
+    } else {
+        return static_cast<double>(edgeCount) / ((vertexCount * (vertexCount - 1)) / 2);
+    }
 }
+
 
 std::string ListGraph::toString() const {
     std::stringstream graphString;

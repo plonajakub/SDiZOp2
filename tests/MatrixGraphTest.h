@@ -17,11 +17,11 @@ private:
     void testMatrixGraph();
     void testAddEdge();
     void testRemoveEdge();
-    void testRemoveEdges();
+    void testRemoveEdge_vertexID();
     void testGetVertexSuccessors();
     void testGetVertexPredecessors();
-    void testGetEdgeIdsFromVertexes();
-    void testGetEdgeParameters();
+    void testGetEdgeIdFromVertexes();
+    void testGetEdgeParameter_vertexID();
     void testGetEdgeParameter();
     void testGetVertexIdsFromEdge();
     void testIsVertexPartOfEdge();

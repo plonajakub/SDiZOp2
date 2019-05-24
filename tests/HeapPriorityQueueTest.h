@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cassert>
-#include "../structures/graphs/priority_queue/HeapPriorityQueue.h"
+#include "../structures/priority_queue/HeapPriorityQueue.h"
 
 using std::cout;
 using std::endl;

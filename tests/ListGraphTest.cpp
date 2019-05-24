@@ -14,9 +14,9 @@ void ListGraphTest::run() {
     testAddEdge();
     pEndInfo("testAddEdge");
 
-    pStartInfo("testRemoveEdges");
-    testRemoveEdges();
-    pEndInfo("testRemoveEdges");
+    pStartInfo("testRemoveEdge");
+    testRemoveEdge();
+    pEndInfo("testRemoveEdge");
 
     pStartInfo("testGetVertexSuccessors");
     testGetVertexSuccessors();
@@ -26,9 +26,9 @@ void ListGraphTest::run() {
     testGetVertexPredecessors();
     pEndInfo("testGetVertexPredecessors");
 
-    pStartInfo("testGetEdgeParameters");
-    testGetEdgeParameters();
-    pEndInfo("testGetEdgeParameters");
+    pStartInfo("testGetEdgeParameter");
+    testGetEdgeParameter();
+    pEndInfo("testGetEdgeParameter");
 
     pStartInfo("testGetVertexCount");
     testGetVertexCount();
@@ -48,14 +48,16 @@ void ListGraphTest::run() {
 }
 
 void ListGraphTest::testListGraph() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     assert(lgd.successorsLists.getSize() == 5);
     assert(lgd.parametersMatrix.getSize() == 5);
     assert(lgd.edgeCount == 0);
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     assert(lgud.successorsLists.getSize() == 5);
     assert(lgud.parametersMatrix.getSize() == 5);
     assert(lgud.edgeCount == 0);
@@ -64,7 +66,8 @@ void ListGraphTest::testListGraph() {
 }
 
 void ListGraphTest::testAddEdge() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
@@ -79,7 +82,8 @@ void ListGraphTest::testAddEdge() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
@@ -95,15 +99,16 @@ void ListGraphTest::testAddEdge() {
     cout << lgud << endl;
 }
 
-void ListGraphTest::testRemoveEdges() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+void ListGraphTest::testRemoveEdge() {
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
     lgd.addEdge(2, 4, 20);
     lgd.addEdge(0, 4, 25);
 
-    lgd.removeEdges(0, 3);
+    lgd.removeEdge(0, 3);
     assert(lgd.successorsLists[0].getSize() == 2);
     assert(lgd.successorsLists[1].getSize() == 0);
     assert(lgd.successorsLists[2].getSize() == 1);
@@ -113,7 +118,7 @@ void ListGraphTest::testRemoveEdges() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    lgd.removeEdges(0, 1);
+    lgd.removeEdge(0, 1);
     assert(lgd.successorsLists[0].getSize() == 1);
     assert(lgd.successorsLists[1].getSize() == 0);
     assert(lgd.successorsLists[2].getSize() == 1);
@@ -123,9 +128,9 @@ void ListGraphTest::testRemoveEdges() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    lgd.removeEdges(3, 0);
-    lgd.removeEdges(2, 4);
-    lgd.removeEdges(0, 4);
+    lgd.removeEdge(3, 0);
+    lgd.removeEdge(2, 4);
+    lgd.removeEdge(0, 4);
     assert(lgd.successorsLists[0].getSize() == 0);
     assert(lgd.successorsLists[1].getSize() == 0);
     assert(lgd.successorsLists[2].getSize() == 0);
@@ -135,14 +140,15 @@ void ListGraphTest::testRemoveEdges() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
     lgud.addEdge(2, 4, 20);
     lgud.addEdge(0, 4, 25);
 
-    lgud.removeEdges(0, 3);
+    lgud.removeEdge(0, 3);
     assert(lgud.successorsLists[0].getSize() == 2);
     assert(lgud.successorsLists[1].getSize() == 1);
     assert(lgud.successorsLists[2].getSize() == 2);
@@ -152,7 +158,7 @@ void ListGraphTest::testRemoveEdges() {
     cout << undirected << endl;
     cout << lgud << endl;
 
-    lgud.removeEdges(2, 4);
+    lgud.removeEdge(2, 4);
     assert(lgud.successorsLists[0].getSize() == 2);
     assert(lgud.successorsLists[1].getSize() == 1);
     assert(lgud.successorsLists[2].getSize() == 1);
@@ -162,9 +168,9 @@ void ListGraphTest::testRemoveEdges() {
     cout << undirected << endl;
     cout << lgud << endl;
 
-    lgud.removeEdges(3, 2);
-    lgud.removeEdges(0, 1);
-    lgud.removeEdges(0, 4);
+    lgud.removeEdge(3, 2);
+    lgud.removeEdge(0, 1);
+    lgud.removeEdge(0, 4);
     assert(lgud.successorsLists[0].getSize() == 0);
     assert(lgud.successorsLists[1].getSize() == 0);
     assert(lgud.successorsLists[2].getSize() == 0);
@@ -176,7 +182,8 @@ void ListGraphTest::testRemoveEdges() {
 }
 
 void ListGraphTest::testGetVertexSuccessors() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
@@ -187,7 +194,8 @@ void ListGraphTest::testGetVertexSuccessors() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
@@ -200,7 +208,8 @@ void ListGraphTest::testGetVertexSuccessors() {
 }
 
 void ListGraphTest::testGetVertexPredecessors() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
@@ -211,7 +220,8 @@ void ListGraphTest::testGetVertexPredecessors() {
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
@@ -223,38 +233,40 @@ void ListGraphTest::testGetVertexPredecessors() {
     cout << lgud << endl;
 }
 
-void ListGraphTest::testGetEdgeParameters() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+void ListGraphTest::testGetEdgeParameter() {
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
     lgd.addEdge(2, 4, 20);
     lgd.addEdge(0, 4, 25);
-    assert(lgd.getEdgeParameters(0, 3).getSize() == 1);
-    assert(lgd.getEdgeParameters(0, 3).getIterator().getData().parameter == 5);
+    assert(lgd.getEdgeParameter(0, 3) == 5);
     cout << directed << endl;
     cout << lgd << endl;
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 5);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    5);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
     lgud.addEdge(2, 4, 20);
     lgud.addEdge(0, 4, 25);
-    assert(lgud.getEdgeParameters(2, 3).getSize() == 1);
-    assert(lgud.getEdgeParameters(2, 3).getIterator().getData().parameter == 10);
+    assert(lgud.getEdgeParameter(2, 3) == 10);
     cout << undirected << endl;
     cout << lgud << endl;
 }
 
 void ListGraphTest::testGetVertexCount() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
     assert(lgd.getVertexCount() == 5);
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 6);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    6);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
@@ -263,13 +275,15 @@ void ListGraphTest::testGetVertexCount() {
 }
 
 void ListGraphTest::testGetEdgeCount() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
     assert(lgd.getEdgeCount() == 3);
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 6);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    6);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
@@ -278,18 +292,20 @@ void ListGraphTest::testGetEdgeCount() {
 }
 
 void ListGraphTest::testGetDensity() {
-    ListGraph lgd(ListGraph::GraphType::Directed, 5);
+    ListGraph lgd(ListGraph::GraphType::Directed,
+    5);
     lgd.addEdge(0, 3, 5);
     lgd.addEdge(3, 0, 10);
     lgd.addEdge(0, 1, 15);
-    assert(lgd.getDensity() == (double)3/5);
+    assert(lgd.getDensity() == (double) 3 / (5 * 4));
 
-    ListGraph lgud(ListGraph::GraphType::Undirected, 6);
+    ListGraph lgud(ListGraph::GraphType::Undirected,
+    6);
     lgud.addEdge(0, 3, 5);
     lgud.addEdge(3, 2, 10);
     lgud.addEdge(0, 1, 15);
     lgud.addEdge(2, 4, 20);
-    assert(lgud.getDensity() == (double)4/6);
+    assert(lgud.getDensity() == (double) 4 / ((6 * 5) / 2));
 }
 
 void ListGraphTest::testToString() {

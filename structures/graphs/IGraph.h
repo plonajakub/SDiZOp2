@@ -14,20 +14,20 @@ public:
     };
 
     enum GraphStructure {
-        IncidenceMatrix, AdjecencyList
+        IncidenceMatrix, AdjacencyList
     };
 
     virtual ~IGraph() = default;
 
     virtual void addEdge(int startVertexID, int endVertexID, int edgeParameter) = 0;
 
-    virtual void removeEdges(int startVertexID, int endVertexID) = 0;
+    virtual void removeEdge(int startVertexID, int endVertexID) = 0;
 
     virtual DoublyLinkedList<int> getVertexSuccessors(int vertexID) const = 0;
 
     virtual DoublyLinkedList<int> getVertexPredecessors(int vertexID) const = 0;
 
-    virtual DoublyLinkedList<Edge> getEdgeParameters(int startVertexID, int endVertexID) const = 0;
+    virtual int getEdgeParameter(int startVertexID, int endVertexID) const = 0;
 
     virtual int getVertexCount() const = 0;
 

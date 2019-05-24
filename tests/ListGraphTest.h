@@ -17,10 +17,10 @@ public:
 private:
     void testListGraph();
     void testAddEdge();
-    void testRemoveEdges();
+    void testRemoveEdge();
     void testGetVertexSuccessors();
     void testGetVertexPredecessors();
-    void testGetEdgeParameters();
+    void testGetEdgeParameter();
     void testGetVertexCount();
     void testGetEdgeCount();
     void testGetDensity();

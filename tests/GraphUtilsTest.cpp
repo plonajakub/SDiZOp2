@@ -25,11 +25,11 @@ void GraphUtilsTest::loadGraphFromTxtTest() {
     cout << undirected << *graph << endl;
     delete graph;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjecencyList, IGraph::GraphType::Directed);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed);
     cout << directed << *graph << endl;
     delete graph;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjecencyList, IGraph::GraphType::Undirected);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected);
     cout << undirected << *graph << endl;
     delete graph;
 }
@@ -48,12 +48,12 @@ void GraphUtilsTest::loadRandomGraphTest() {
     cout << undirected << *graph << endl;
     delete graph;
 
-    GraphUtils::loadRandomGraph(&graph, IGraph::GraphStructure::AdjecencyList, IGraph::GraphType::Directed, 10, 50, 0,
+    GraphUtils::loadRandomGraph(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed, 10, 50, 0,
                                 100);
     cout << directed << *graph << endl;
     delete graph;
 
-    GraphUtils::loadRandomGraph(&graph, IGraph::GraphStructure::AdjecencyList, IGraph::GraphType::Undirected, 10, 50,
+    GraphUtils::loadRandomGraph(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected, 10, 50,
                                 0,
                                 100);
     cout << undirected << *graph << endl;

@@ -18,9 +18,9 @@ void MatrixGraphTest::run() {
     testRemoveEdge();
     pEndInfo("testRemoveEdge");
 
-    pStartInfo("testRemoveEdges");
-    testRemoveEdges();
-    pEndInfo("testRemoveEdges");
+    pStartInfo("testRemoveEdge");
+    testRemoveEdge_vertexID();
+    pEndInfo("testRemoveEdge");
 
     pStartInfo("testGetVertexSuccessors");
     testGetVertexSuccessors();
@@ -30,13 +30,13 @@ void MatrixGraphTest::run() {
     testGetVertexPredecessors();
     pEndInfo("testGetVertexPredecessors");
 
-    pStartInfo("testGetEdgeIdsFromVertexes");
-    testGetEdgeIdsFromVertexes();
-    pEndInfo("testGetEdgeIdsFromVertexes");
+    pStartInfo("testGetEdgeIdFromVertexes");
+    testGetEdgeIdFromVertexes();
+    pEndInfo("testGetEdgeIdFromVertexes");
 
-    pStartInfo("testGetEdgeParameters");
-    testGetEdgeParameters();
-    pEndInfo("testGetEdgeParameters");
+    pStartInfo("testGetEdgeParameter");
+    testGetEdgeParameter_vertexID();
+    pEndInfo("testGetEdgeParameter");
 
     pStartInfo("testGetEdgeParameter");
     testGetEdgeParameter();
@@ -167,16 +167,24 @@ void MatrixGraphTest::testRemoveEdge() {
     cout << undirected << mgud << endl;
 }
 
-void MatrixGraphTest::testRemoveEdges() {
+void MatrixGraphTest::testRemoveEdge_vertexID() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(0, 1, 10);
-    mgd.addEdge(0, 1, 11);
+    mgd.addEdge(0, 2, 11);
     mgd.addEdge(1, 0, 12);
-    mgd.addEdge(1, 0, 13);
+    mgd.addEdge(1, 2, 13);
     mgd.addEdge(1, 4, 14);
     cout << directed << mgd << endl;
 
-    mgd.removeEdges(0, 1);
+    mgd.removeEdge(0, 1);
+    assert(mgd.incidenceMatrix.getSize() == 5);
+    for (int i = 0; i < 5; ++i) {
+        assert(mgd.incidenceMatrix[i].getSize() == 4);
+    }
+    assert(mgd.edgeParameters.getSize() == 4);
+    cout << directed << mgd << endl;
+
+    mgd.removeEdge(1, 0);
     assert(mgd.incidenceMatrix.getSize() == 5);
     for (int i = 0; i < 5; ++i) {
         assert(mgd.incidenceMatrix[i].getSize() == 3);
@@ -184,45 +192,37 @@ void MatrixGraphTest::testRemoveEdges() {
     assert(mgd.edgeParameters.getSize() == 3);
     cout << directed << mgd << endl;
 
-    mgd.removeEdges(1, 0);
+    mgd.removeEdge(1, 4);
     assert(mgd.incidenceMatrix.getSize() == 5);
     for (int i = 0; i < 5; ++i) {
-        assert(mgd.incidenceMatrix[i].getSize() == 1);
+        assert(mgd.incidenceMatrix[i].getSize() == 2);
     }
-    assert(mgd.edgeParameters.getSize() == 1);
-    cout << directed << mgd << endl;
-
-    mgd.removeEdges(1, 4);
-    assert(mgd.incidenceMatrix.getSize() == 5);
-    for (int i = 0; i < 5; ++i) {
-        assert(mgd.incidenceMatrix[i].getSize() == 0);
-    }
-    assert(mgd.edgeParameters.getSize() == 0);
+    assert(mgd.edgeParameters.getSize() == 2);
     cout << directed << mgd << endl;
 
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
     mgud.addEdge(0, 1, 10);
-    mgud.addEdge(1, 0, 12);
-    mgud.addEdge(0, 1, 11);
-    mgud.addEdge(1, 4, 14);
-    mgud.addEdge(1, 0, 13);
+    mgud.addEdge(0, 2, 12);
+    mgud.addEdge(1, 2, 11);
+    mgud.addEdge(1, 3, 14);
+    mgud.addEdge(3, 0, 13);
     cout << undirected << mgud << endl;
 
-    mgud.removeEdges(0, 1);
+    mgud.removeEdge(0, 1);
     assert(mgud.incidenceMatrix.getSize() == 5);
     for (int i = 0; i < 5; ++i) {
-        assert(mgud.incidenceMatrix[i].getSize() == 1);
+        assert(mgud.incidenceMatrix[i].getSize() == 4);
     }
-    assert(mgud.edgeParameters.getSize() == 1);
+    assert(mgud.edgeParameters.getSize() == 4);
     cout << undirected << mgud << endl;
 
-    mgud.removeEdges(1, 4);
+    mgud.removeEdge(1, 3);
     assert(mgud.incidenceMatrix.getSize() == 5);
     for (int i = 0; i < 5; ++i) {
-        assert(mgud.incidenceMatrix[i].getSize() == 0);
+        assert(mgud.incidenceMatrix[i].getSize() == 3);
     }
-    assert(mgud.edgeParameters.getSize() == 0);
+    assert(mgud.edgeParameters.getSize() == 3);
     cout << undirected << mgud << endl;
 }
 
@@ -231,8 +231,8 @@ void MatrixGraphTest::testGetVertexSuccessors() {
     mgd.addEdge(0, 1, 10);
     mgd.addEdge(0, 3, 11);
     mgd.addEdge(0, 4, 12);
-    mgd.addEdge(1, 0, 15);
-    mgd.addEdge(2, 0, 16);
+    mgd.addEdge(1, 3, 15);
+    mgd.addEdge(2, 4, 16);
     mgd.addEdge(3, 4, 17);
     cout << directed << mgd << endl;
 
@@ -248,8 +248,8 @@ void MatrixGraphTest::testGetVertexSuccessors() {
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
     mgud.addEdge(0, 1, 10);
-    mgud.addEdge(1, 0, 15);
-    mgud.addEdge(2, 0, 16);
+    mgud.addEdge(0, 2, 15);
+    mgud.addEdge(2, 3, 16);
     mgud.addEdge(3, 4, 17);
     cout << undirected << mgud << endl;
 
@@ -264,12 +264,12 @@ void MatrixGraphTest::testGetVertexSuccessors() {
 
 void MatrixGraphTest::testGetVertexPredecessors() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
-    mgd.addEdge(1, 0, 10);
-    mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
-    mgd.addEdge(4, 0, 12);
     mgd.addEdge(0, 1, 15);
     mgd.addEdge(0, 2, 16);
+    mgd.addEdge(1, 0, 10);
+    mgd.addEdge(3, 0, 11);
+    mgd.addEdge(3, 2, 18);
+    mgd.addEdge(4, 0, 12);
     mgd.addEdge(4, 3, 17);
     cout << directed << mgd << endl;
 
@@ -284,9 +284,9 @@ void MatrixGraphTest::testGetVertexPredecessors() {
     assert(it == predecessors.getEndIt());
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
     mgud.addEdge(0, 1, 15);
     mgud.addEdge(0, 2, 16);
+    mgud.addEdge(1, 3, 10);
     mgud.addEdge(4, 3, 17);
     cout << undirected << mgud << endl;
 
@@ -299,83 +299,59 @@ void MatrixGraphTest::testGetVertexPredecessors() {
     assert(uit == upredecessors.getEndIt());
 }
 
-void MatrixGraphTest::testGetEdgeIdsFromVertexes() {
+void MatrixGraphTest::testGetEdgeIdFromVertexes() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
+    mgd.addEdge(0, 1, 15);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
+    mgd.addEdge(3, 2, 18);
     mgd.addEdge(4, 0, 12);
-    mgd.addEdge(0, 1, 15);
     cout << directed << mgd << endl;
 
-    DoublyLinkedList<int> dIds = mgd.getEdgeIdsFromVertexes(3, 0);
-    DoublyLinkedList<int>::Iterator dit = dIds.getIterator();
-    assert(dit.getData() == 1);
-    ++dit;
-    assert(dit.getData() == 2);
-    ++dit;
-    assert(dit == dIds.getEndIt());
+    int deID = mgd.getEdgeIdFromVertexes(3, 0);
+    assert(deID == 2);
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(1, 4, 10);
+    mgud.addEdge(1, 2, 16);
     mgud.addEdge(4, 3, 17);
     cout << undirected << mgud << endl;
 
-    DoublyLinkedList<int> uIds = mgud.getEdgeIdsFromVertexes(1, 0);
-    DoublyLinkedList<int>::Iterator uit = uIds.getIterator();
-    assert(uit.getData() == 0);
-    ++uit;
-    assert(uit.getData() == 1);
-    ++uit;
-    assert(uit.getData() == 2);
-    ++uit;
-    assert(uit == uIds.getEndIt());
+    int ueID = mgud.getEdgeIdFromVertexes(4, 3);
+    assert(ueID == 4);
 }
 
-void MatrixGraphTest::testGetEdgeParameters() {
+void MatrixGraphTest::testGetEdgeParameter_vertexID() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
+    mgd.addEdge(0, 1, 15);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
+    mgd.addEdge(3, 2, 18);
     mgd.addEdge(4, 0, 12);
-    mgd.addEdge(0, 1, 15);
     cout << directed << mgd << endl;
 
-    DoublyLinkedList<Edge> dParameters = mgd.getEdgeParameters(3, 0);
-    DoublyLinkedList<Edge>::Iterator dit = dParameters.getIterator();
-    assert(dit.getData().edgeID == 1 && dit.getData().parameter == 11);
-    ++dit;
-    assert(dit.getData().edgeID == 2 && dit.getData().parameter == 18);
-    ++dit;
-    assert(dit == dParameters.getEndIt());
+    int deParam = mgd.getEdgeParameter(0, 1);
+    assert(deParam == 15);
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(0, 3, 16);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(4, 3, 17);
     cout << undirected << mgud << endl;
 
-    DoublyLinkedList<Edge> uParameters = mgud.getEdgeParameters(1, 0);
-    DoublyLinkedList<Edge>::Iterator uit = uParameters.getIterator();
-    assert(uit.getData().edgeID == 0 && uit.getData().parameter == 10);
-    ++uit;
-    assert(uit.getData().edgeID == 1 && uit.getData().parameter == 15);
-    ++uit;
-    assert(uit.getData().edgeID == 2 && uit.getData().parameter == 18);
-    ++uit;
-    assert(uit == uParameters.getEndIt());
+    int ueParam = mgud.getEdgeParameter(0, 2);
+    assert(ueParam == 18);
 }
 
 void MatrixGraphTest::testGetEdgeParameter() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
+    mgd.addEdge(3, 2, 18);
     mgd.addEdge(4, 3, 12);
     mgd.addEdge(0, 1, 15);
     cout << directed << mgd << endl;
@@ -383,9 +359,9 @@ void MatrixGraphTest::testGetEdgeParameter() {
     assert(mgd.getEdgeParameter(3) == 12);
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
+    mgud.addEdge(0, 3, 18);
     mgud.addEdge(0, 2, 16);
     mgud.addEdge(4, 3, 17);
     cout << undirected << mgud << endl;
@@ -397,26 +373,26 @@ void MatrixGraphTest::testGetVertexIdsFromEdge() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
+    mgd.addEdge(3, 2, 18);
     mgd.addEdge(4, 0, 12);
     mgd.addEdge(3, 4, 19);
     mgd.addEdge(0, 1, 15);
     cout << directed << mgd << endl;
 
     Table<int> dIds = mgd.getVertexIdsFromEdge(2);
-    assert(dIds[0] == 3 && dIds[1] == 0);
+    assert(dIds[0] == 3 && dIds[1] == 2);
     assert(dIds.getSize() == 2);
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(0, 3, 16);
     mgud.addEdge(4, 3, 17);
     cout << undirected << mgud << endl;
 
     Table<int> uIds = mgud.getVertexIdsFromEdge(2);
-    assert(uIds[0] == 0 && uIds[1] == 1);
+    assert(uIds[0] == 0 && uIds[1] == 2);
     assert(uIds.getSize() == 2);
 }
 
@@ -424,25 +400,24 @@ void MatrixGraphTest::testIsVertexPartOfEdge() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
-    mgd.addEdge(4, 3, 12);
+    mgd.addEdge(3, 2, 18);
+    mgd.addEdge(4, 0, 12);
+    mgd.addEdge(3, 4, 19);
     mgd.addEdge(0, 1, 15);
-    mgd.addEdge(0, 1, 19);
     cout << directed << mgd << endl;
 
     assert(!mgd.isVertexPartOfEdge(3, 0));
     assert(mgd.isVertexPartOfEdge(3, 1));
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(0, 3, 16);
     mgud.addEdge(4, 3, 17);
-    mgud.addEdge(0, 1, 19);
     cout << undirected << mgud << endl;
 
-    assert(!mgud.isVertexPartOfEdge(2, 0));
+    assert(!mgud.isVertexPartOfEdge(2, 1));
     assert(mgud.isVertexPartOfEdge(3, 4));
 }
 
@@ -458,48 +433,46 @@ void MatrixGraphTest::testGetEdgeCount() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
-    mgd.addEdge(4, 3, 12);
+    mgd.addEdge(3, 2, 18);
+    mgd.addEdge(4, 0, 12);
+    mgd.addEdge(3, 4, 19);
     mgd.addEdge(0, 1, 15);
-    mgd.addEdge(0, 1, 19);
     cout << directed << mgd << endl;
 
     assert(mgd.getEdgeCount() == 6);
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(0, 3, 16);
     mgud.addEdge(4, 3, 17);
-    mgud.addEdge(0, 1, 19);
     cout << undirected << mgud << endl;
 
-    assert(mgud.getEdgeCount() == 6);
+    assert(mgud.getEdgeCount() == 5);
 }
 
 void MatrixGraphTest::testGetDensity() {
     MatrixGraph mgd(MatrixGraph::GraphType::Directed, 5);
     mgd.addEdge(1, 0, 10);
     mgd.addEdge(3, 0, 11);
-    mgd.addEdge(3, 0, 18);
-    mgd.addEdge(4, 3, 12);
+    mgd.addEdge(3, 2, 18);
+    mgd.addEdge(4, 0, 12);
+    mgd.addEdge(3, 4, 19);
     mgd.addEdge(0, 1, 15);
-    mgd.addEdge(0, 1, 19);
     cout << directed << mgd << endl;
 
-    assert(mgd.getDensity() == static_cast<double>(6)/5);
+    assert(mgd.getDensity() == static_cast<double>(6) / (5 * 4));
 
     MatrixGraph mgud(MatrixGraph::GraphType::Undirected, 5);
-    mgud.addEdge(1, 0, 10);
+    mgud.addEdge(1, 2, 10);
     mgud.addEdge(0, 1, 15);
-    mgud.addEdge(0, 1, 18);
-    mgud.addEdge(0, 2, 16);
+    mgud.addEdge(0, 2, 18);
+    mgud.addEdge(0, 3, 16);
     mgud.addEdge(4, 3, 17);
-    mgud.addEdge(0, 1, 19);
     cout << undirected << mgud << endl;
 
-    assert(mgud.getDensity() == static_cast<double>(6)/5);
+    assert(mgud.getDensity() == static_cast<double>(5)/((5 * 4) / 2));
 }
 
 void MatrixGraphTest::testToString() {
