@@ -6,9 +6,9 @@
 #define undirected "--------Undirected:\n"
 
 void GraphUtilsTest::run() {
-//    pStartInfo("loadGraphFromTxtTest");
-//    loadGraphFromTxtTest();
-//    pEndInfo("loadGraphFromTxtTest");
+    pStartInfo("loadGraphFromTxtTest");
+    loadGraphFromTxtTest();
+    pEndInfo("loadGraphFromTxtTest");
     pStartInfo("loadRandomGraphTest");
     loadRandomGraphTest();
     pEndInfo("loadRandomGraphTest");

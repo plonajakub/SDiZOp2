@@ -7,8 +7,8 @@
 #include <stdexcept>
 
 #include "IGraph.h"
-#include "Table.h"
-#include "DoublyLinkedList.h"
+#include "../Table.h"
+#include "../DoublyLinkedList.h"
 
 
 // Loops and multiple edges disallowed

@@ -6,7 +6,7 @@
 #include <exception>
 #include <string>
 
-#include "QueueNode.h"
+#include "graphs/priority_queue/QueueNode.h"
 #include "DoublyLinkedList.h"
 
 template <class T>

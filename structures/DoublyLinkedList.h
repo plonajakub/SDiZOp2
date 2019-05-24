@@ -7,7 +7,7 @@
 #include <iostream>
 #include <exception>
 
-#include "Edge.h"
+#include "graphs/misc/Edge.h"
 
 // Represents single node of the list
 template <class T>

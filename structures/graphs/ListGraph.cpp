@@ -100,11 +100,7 @@ int ListGraph::getEdgeCount() const {
 }
 
 double ListGraph::getDensity() const {
-    int vertexCount = this->getVertexCount();
-    if (vertexCount == 0) {
-        return std::numeric_limits<double>::max();
-    }
-    return getEdgeCount() / static_cast<double>(vertexCount);
+    return getEdgeCount() / static_cast<double>(this->getVertexCount());
 }
 
 std::string ListGraph::toString() const {

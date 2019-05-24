@@ -8,7 +8,7 @@
 #include <stdexcept>
 
 #include "QueueNode.h"
-#include "Table.h"
+#include "../Table.h"
 
 template <class T>
 class HeapPriorityQueue {

@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "DoublyLinkedList.h"
-#include "Edge.h"
+#include "../DoublyLinkedList.h"
+#include "misc/Edge.h"
 
 class IGraph {
 public:

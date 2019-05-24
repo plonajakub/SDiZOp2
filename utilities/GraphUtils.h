@@ -5,9 +5,9 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "../structures/IGraph.h"
-#include "../structures/ListGraph.h"
-#include "../structures/MatrixGraph.h"
+#include "../structures/graphs/IGraph.h"
+#include "../structures/graphs/ListGraph.h"
+#include "../structures/graphs/MatrixGraph.h"
 
 class GraphUtils {
 public:

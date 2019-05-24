@@ -4,7 +4,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "../structures/MatrixGraph.h"
+#include "../structures/graphs/MatrixGraph.h"
 
 using std::cout;
 using std::endl;

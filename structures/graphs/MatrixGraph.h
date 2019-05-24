@@ -9,9 +9,9 @@
 #include <stdexcept>
 
 #include "IGraph.h"
-#include "Table.h"
-#include "DoublyLinkedList.h"
-#include "Edge.h"
+#include "../Table.h"
+#include "../DoublyLinkedList.h"
+#include "misc/Edge.h"
 
 
 class MatrixGraph : public IGraph {

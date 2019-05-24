@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "../structures/ListGraph.h"
+#include "../structures/graphs/ListGraph.h"
 
 using std::cout;
 using std::endl;

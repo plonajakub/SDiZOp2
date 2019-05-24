@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "tests/MatrixGraphTest.h"
 #include "tests/HeapPriorityQueueTest.h"
@@ -10,14 +11,15 @@ using std::endl;
 
 int main() {
     srand(time(nullptr));
-//    MatrixGraphTest mgt;
-//    mgt.run();
 
-//    HeapPriorityQueueTest hpqt;
-//    hpqt.run();
+    MatrixGraphTest mgt;
+    mgt.run();
 
-//    ListGraphTest lgt;
-//    lgt.run();
+    HeapPriorityQueueTest hpqt;
+    hpqt.run();
+
+    ListGraphTest lgt;
+    lgt.run();
 
     GraphUtilsTest gut;
     gut.run();
