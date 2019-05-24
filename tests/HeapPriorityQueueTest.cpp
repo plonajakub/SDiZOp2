@@ -43,9 +43,9 @@ void HeapPriorityQueueTest::testExtractFront() {
     node.key = 10;
     queue.enqueue(node);
 
-    assert(queue.dequeue().key == 1);
-    assert(queue.dequeue().key == 5);
-    assert(queue.dequeue().key == 10);
-    assert(queue.dequeue().key == 15);
+    assert(queue.dequeue() == 1);
+    assert(queue.dequeue() == 5);
+    assert(queue.dequeue() == 10);
+    assert(queue.dequeue() == 15);
     assert(queue.table.getSize() == 0);
 }

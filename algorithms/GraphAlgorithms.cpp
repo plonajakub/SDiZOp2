@@ -109,13 +109,13 @@ IGraph *GraphAlgorithms::findMinimalSpanningTreePrim(const IGraph *graph) {
                         Edge(currentVertexID, successorID, edgeWeight),
                         edgeWeight));
             }
-            do {
-                edge = edges.dequeue().data;
-            } while (isPartOfTree[edge.endVertexID]);
-            spanningTree->addEdge(edge.startVertexID, edge.endVertexID, edge.parameter);
-            isPartOfTree[edge.endVertexID] = true;
-            currentVertexID = edge.endVertexID;
         }
+        do {
+            edge = edges.dequeue();
+        } while (isPartOfTree[edge.endVertexID]);
+        spanningTree->addEdge(edge.startVertexID, edge.endVertexID, edge.parameter);
+        isPartOfTree[edge.endVertexID] = true;
+        currentVertexID = edge.endVertexID;
     }
     delete[] isPartOfTree;
     return spanningTree;

@@ -25,7 +25,7 @@ void HeapPriorityQueue<T>::enqueue(const QueueNode<T> &node) {
 }
 
 template<class T>
-QueueNode<T> HeapPriorityQueue<T>::dequeue() {
+T HeapPriorityQueue<T>::dequeue() {
     if (table.getSize() < 1) {
         throw std::exception();
     }
@@ -33,7 +33,7 @@ QueueNode<T> HeapPriorityQueue<T>::dequeue() {
     table[0] = table[table.getSize() - 1];
     table.removeFromEnd();
     this->heapify(0);
-    return front;
+    return front.data;
 }
 
 //void HeapPriorityQueue::remove(int key) {

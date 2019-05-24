@@ -39,14 +39,14 @@ void AlgorithmsTest::findMinimalSpanningTreePrim() {
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Undirected);
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(graph);
-    cout << "Minimal spanning tree (IncidenceMatrix) :" << minimalSpanningTree << endl;
+    cout << "Minimal spanning tree (IncidenceMatrix)\n" << *minimalSpanningTree << endl;
     delete graph;
     delete minimalSpanningTree;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected);
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(graph);
-    cout << "Minimal spanning tree (AdjacencyList) :" << minimalSpanningTree << endl;
+    cout << "Minimal spanning tree (AdjacencyList)\n" << *minimalSpanningTree << endl;
     delete graph;
     delete minimalSpanningTree;
 }

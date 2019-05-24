@@ -24,7 +24,7 @@ public:
     // Inserts key into heap
     void enqueue(const QueueNode<T> &node);
 
-    QueueNode<T> dequeue();
+    T dequeue();
 
 //    // Removes key from heap
 //    void remove(int key);
