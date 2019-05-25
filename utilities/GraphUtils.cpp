@@ -1,17 +1,11 @@
 #include "GraphUtils.h"
 
 
-void GraphUtils::loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type) {
-    std::string file_path;
-    if (type == IGraph::GraphType::Directed) {
-        file_path = "../input_data/directed_graph_definition.txt";
-    } else {
-        file_path = "../input_data/undirected_graph_definition.txt";
-    }
-
-    std::fstream file(file_path);
+void GraphUtils::loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type,
+                                  const std::string &fileName) {
+    std::fstream file("../input_data/" + fileName);
     if (!file.is_open()) {
-        std::cout << "Error during opening the file: " << file_path << std::endl;
+        std::cout << "Error during opening the file: " << fileName << std::endl;
         return;
     }
 
@@ -30,7 +24,7 @@ void GraphUtils::loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure struct
             (*pGraph)->addEdge(startVertexID, endVertexID, edgeParameter);
         } catch (const std::invalid_argument &e) {
             std::cout << e.what() << std::endl;
-            std::cout << "Problem in " << file_path << " on line: " << i + 2 << std::endl;
+            std::cout << "Problem in " << fileName << " on line: " << i + 2 << std::endl;
         }
     }
     file.close();

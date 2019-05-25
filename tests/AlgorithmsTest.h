@@ -18,7 +18,9 @@ public:
 
 private:
     void findShortestPathDijkStraTest();
+    void findShortestPathBellmanFordTest();
     void findMinimalSpanningTreePrim();
+    void findMinimalSpanningTreeKruskal();
 };
 
 

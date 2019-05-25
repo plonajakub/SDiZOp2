@@ -14,7 +14,8 @@
 class GraphUtils {
 public:
 
-    static void loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type);
+    static void loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type,
+                                 const std::string &fileName);
 
     // Density in %
     static void loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type, int nVertex,

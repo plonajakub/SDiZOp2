@@ -17,19 +17,23 @@ void GraphUtilsTest::run() {
 void GraphUtilsTest::loadGraphFromTxtTest() {
     IGraph *graph = nullptr;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
+                                 "directed_graph_definition.txt");
     cout << directed << *graph << endl;
     delete graph;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Undirected);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Undirected,
+                                 "undirected_graph_definition.txt");
     cout << undirected << *graph << endl;
     delete graph;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
+                                 "directed_graph_definition.txt");
     cout << directed << *graph << endl;
     delete graph;
 
-    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected);
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected,
+                                 "undirected_graph_definition.txt");
     cout << undirected << *graph << endl;
     delete graph;
 }
