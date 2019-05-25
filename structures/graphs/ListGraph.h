@@ -37,6 +37,8 @@ public:
 
     std::string toString() const override;
 
+    GraphType getGraphType() const override;
+
 private:
 
     void addVertex() override;

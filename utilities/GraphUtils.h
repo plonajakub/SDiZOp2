@@ -4,10 +4,12 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "../structures/graphs/IGraph.h"
 #include "../structures/graphs/ListGraph.h"
 #include "../structures/graphs/MatrixGraph.h"
+#include "../structures/Stack.h"
 
 class GraphUtils {
 public:
@@ -17,6 +19,8 @@ public:
     // Density in %
     static void loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type, int nVertex,
                                 double density, int parameterMin, int parameterMax);
+
+    static bool isGraphConnected(const IGraph *graph);
 
 private:
     // Returns random value from [leftLimit, rightLimit) interval

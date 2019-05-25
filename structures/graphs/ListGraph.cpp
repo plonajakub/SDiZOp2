@@ -154,3 +154,7 @@ std::string ListGraph::toString() const {
     }
     return graphString.str();
 }
+
+IGraph::GraphType ListGraph::getGraphType() const {
+    return TYPE;
+}

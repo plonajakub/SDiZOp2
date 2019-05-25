@@ -64,3 +64,57 @@ void GraphUtils::loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structu
 int GraphUtils::getRand(int leftLimit, int rightLimit) {
     return leftLimit + rand() % (rightLimit - leftLimit);
 }
+
+bool GraphUtils::isGraphConnected(const IGraph *graph) {
+    const IGraph *undirectedGraph = graph;
+
+    IGraph *tmpGraph = nullptr;
+    if (graph->getGraphType() == IGraph::GraphType::Directed) {
+        tmpGraph = new ListGraph(IGraph::GraphType::Undirected, graph->getVertexCount());
+        auto vertices = graph->getVertexes();
+        DoublyLinkedList<int> successors;
+        int currentVertex;
+        for (auto vIt = vertices.getIterator(); vIt != vertices.getEndIt(); ++vIt) {
+            currentVertex = vIt.getData();
+            successors = graph->getVertexSuccessors(currentVertex);
+            for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+                try {
+                    tmpGraph->addEdge(currentVertex, sIt.getData(), 0);
+                } catch (const std::invalid_argument &e) {
+                    // Skip edge (already exists)
+                }
+            }
+        }
+        undirectedGraph = tmpGraph;
+    }
+
+    bool *isVertexVisited = new bool[undirectedGraph->getVertexCount()];
+    isVertexVisited[0] = true;
+    for (int i = 1; i < undirectedGraph->getVertexCount(); ++i) {
+        isVertexVisited[i] = false;
+    }
+
+    Stack<int> pendingVertices;
+    pendingVertices.push(0);
+
+    int visitedVerticesCount = 0;
+    int currentVertex, successor;
+    DoublyLinkedList<int> currentSuccessors;
+    while (!pendingVertices.isEmpty()) {
+        currentVertex = pendingVertices.pop();
+        ++visitedVerticesCount;
+        currentSuccessors = undirectedGraph->getVertexSuccessors(currentVertex);
+        for (auto it = currentSuccessors.getIterator(); it != currentSuccessors.getEndIt(); ++it) {
+            successor = it.getData();
+            if (isVertexVisited[successor]) {
+                continue;
+            }
+            pendingVertices.push(successor);
+            isVertexVisited[successor] = true;
+        }
+    }
+
+    delete[] isVertexVisited;
+    delete tmpGraph;
+    return visitedVerticesCount == undirectedGraph->getVertexCount();
+}

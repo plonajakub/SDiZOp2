@@ -266,4 +266,8 @@ bool MatrixGraph::isVertexPartOfEdge(int vertexID, int edgeID) const {
     return incidenceMatrix[vertexID][edgeID] != 0;
 }
 
+IGraph::GraphType MatrixGraph::getGraphType() const {
+    return TYPE;
+}
+
 

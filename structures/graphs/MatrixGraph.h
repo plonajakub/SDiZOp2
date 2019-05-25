@@ -52,6 +52,8 @@ public:
 
     std::string toString() const override;
 
+    GraphType getGraphType() const override;
+
     static const int EDGE_NOT_PRESENT = -2;
 
     static const int VERTEX_NOT_PRESENT = -1;

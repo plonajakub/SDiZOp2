@@ -39,6 +39,8 @@ public:
 
     virtual std::string toString() const = 0;
 
+    virtual GraphType getGraphType() const = 0;
+
 private:
 
     virtual void addVertex() = 0;
