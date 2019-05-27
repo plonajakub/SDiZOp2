@@ -6,58 +6,97 @@
 #define undirected "--------Undirected:\n"
 
 void AlgorithmsTest::run() {
-    pStartInfo("findShortestPathDijkStraTest");
-    findShortestPathDijkStraTest();
-    pEndInfo("findShortestPathDijkStraTest");
+    pStartInfo("findShortestPathDijkstraTest");
+    findShortestPathDijkstraTest();
+    pEndInfo("findShortestPathDijkstraTest");
+    pStartInfo("findShortestPathDijkstraHeapTest");
+    findShortestPathDijkstraHeapTest();
+    pEndInfo("findShortestPathDijkstraHeapTest");
     pStartInfo("findShortestPathBellmanFordTest");
     findShortestPathBellmanFordTest();
     pEndInfo("findShortestPathBellmanFordTest");
-//    pStartInfo("findMinimalSpanningTreePrim");
-//    findMinimalSpanningTreePrim();
-//    pEndInfo("findMinimalSpanningTreePrim");
-//    pStartInfo("findMinimalSpanningTreeKruskal");
-//    findMinimalSpanningTreeKruskal();
-//    pEndInfo("findMinimalSpanningTreeKruskal");
+    pStartInfo("findMinimalSpanningTreePrim");
+    findMinimalSpanningTreePrim();
+    pEndInfo("findMinimalSpanningTreePrim");
+    pStartInfo("findMinimalSpanningTreeKruskal");
+    findMinimalSpanningTreeKruskal();
+    pEndInfo("findMinimalSpanningTreeKruskal");
 }
 
-void AlgorithmsTest::findShortestPathDijkStraTest() {
-    IGraph *graph;
+void AlgorithmsTest::findShortestPathDijkstraTest() {
+    IGraph *graph = nullptr;
+    int *predecessorsOnPath = nullptr;
     DoublyLinkedList<int> shortestPath;
     int startVertexID = 1;
     int endVertexId = 7;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
                                  "dijkstra_directed_graph.txt");
+    predecessorsOnPath = new int[graph->getVertexCount()];
     cout << *graph << endl;
-    shortestPath = GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId);
+    GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
     cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (IncidenceMatrix) is: " << shortestPath << endl;
     delete graph;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
                                  "dijkstra_directed_graph.txt");
-    shortestPath = GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId);
+    GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
     cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (AdjacencyList) is: " << shortestPath << endl;
     delete graph;
+    delete predecessorsOnPath;
+}
+
+void AlgorithmsTest::findShortestPathDijkstraHeapTest() {
+    IGraph *graph = nullptr;
+    int *predecessorsOnPath = nullptr;
+    DoublyLinkedList<int> shortestPath;
+    int startVertexID = 1;
+    int endVertexId = 7;
+
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
+                                 "dijkstra_directed_graph.txt");
+    predecessorsOnPath = new int[graph->getVertexCount()];
+    cout << *graph << endl;
+    GraphAlgorithms::findShortestPathDijkstraHeap(graph, startVertexID, endVertexId, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
+    cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (IncidenceMatrix) is: " << shortestPath << endl;
+    delete graph;
+
+    GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
+                                 "dijkstra_directed_graph.txt");
+    GraphAlgorithms::findShortestPathDijkstraHeap(graph, startVertexID, endVertexId, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
+    cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (AdjacencyList) is: " << shortestPath << endl;
+    delete graph;
+    delete predecessorsOnPath;
 }
 
 void AlgorithmsTest::findShortestPathBellmanFordTest() {
-    IGraph *graph;
+    IGraph *graph = nullptr;
+    int *predecessorsOnPath = nullptr;
+    bool pathExists;
     DoublyLinkedList<int> shortestPath;
     int startVertexID = 1;
     int endVertexId = 7;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
                                  "bellman_ford_directed_graph.txt");
+    predecessorsOnPath = new int[graph->getVertexCount()];
     cout << *graph << endl;
-    shortestPath = GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, endVertexId);
+    GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, &pathExists, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
     cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (IncidenceMatrix) is: " << shortestPath << endl;
     delete graph;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
                                  "bellman_ford_directed_graph.txt");
-    shortestPath = GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, endVertexId);
+    GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, &pathExists, predecessorsOnPath);
+    shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, endVertexId);
     cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (AdjacencyList) is: " << shortestPath << endl;
     delete graph;
+    delete predecessorsOnPath;
 }
 
 void AlgorithmsTest::findMinimalSpanningTreePrim() {

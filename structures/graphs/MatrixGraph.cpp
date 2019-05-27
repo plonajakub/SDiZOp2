@@ -76,7 +76,7 @@ void MatrixGraph::removeEdge(int edgeID) {
     edgeParameters.remove(edgeID);
 }
 
-DoublyLinkedList<int> MatrixGraph::getVertexes() const {
+DoublyLinkedList<int> MatrixGraph::getVertices() const {
     DoublyLinkedList<int> vertexes;
     int vertexCount = this->getVertexCount();
     for (int i = 0; i < vertexCount; ++i) {

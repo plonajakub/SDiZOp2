@@ -67,7 +67,7 @@ void ListGraph::removeEdge(int startVertexID, int endVertexID) {
     --edgeCount;
 }
 
-DoublyLinkedList<int> ListGraph::getVertexes() const {
+DoublyLinkedList<int> ListGraph::getVertices() const {
     DoublyLinkedList<int> vertexes;
     int vertexCount = this->getVertexCount();
     for (int i = 0; i < vertexCount; ++i) {

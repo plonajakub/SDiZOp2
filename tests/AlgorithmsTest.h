@@ -17,7 +17,8 @@ public:
     void run();
 
 private:
-    void findShortestPathDijkStraTest();
+    void findShortestPathDijkstraTest();
+    void findShortestPathDijkstraHeapTest();
     void findShortestPathBellmanFordTest();
     void findMinimalSpanningTreePrim();
     void findMinimalSpanningTreeKruskal();

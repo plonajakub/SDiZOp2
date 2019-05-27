@@ -65,7 +65,7 @@ bool GraphUtils::isGraphConnected(const IGraph *graph) {
     IGraph *tmpGraph = nullptr;
     if (graph->getGraphType() == IGraph::GraphType::Directed) {
         tmpGraph = new ListGraph(IGraph::GraphType::Undirected, graph->getVertexCount());
-        auto vertices = graph->getVertexes();
+        auto vertices = graph->getVertices();
         DoublyLinkedList<int> successors;
         int currentVertex;
         for (auto vIt = vertices.getIterator(); vIt != vertices.getEndIt(); ++vIt) {

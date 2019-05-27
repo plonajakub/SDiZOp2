@@ -13,18 +13,25 @@
 
 class GraphAlgorithms {
 public:
-    static DoublyLinkedList<int> findShortestPathDijkstra(const IGraph *graph, int startVertexID, int endVertexID);
+    static void findShortestPathDijkstra(const IGraph *graph, int startVertexID, int endVertexID,
+                                         int *outPredecessorsOnPath);
 
-    static DoublyLinkedList<int> findShortestPathBellmanFord(const IGraph *graph, int startVertexID, int endVertexID);
+    static void
+    findShortestPathDijkstraHeap(const IGraph *graph, int startVertexID, int endVertexID, int *outPredecessorsOnPath);
+
+    static DoublyLinkedList<int> decodeShortestPath(const int *predecessorsOnPath, int endVertexID);
+
+    static void findShortestPathBellmanFord(const IGraph *graph, int startVertexID, bool *pathExists,
+                                            int *predecessorsOnPath);
 
     // graph must be connected
-    static IGraph* findMinimalSpanningTreePrim(const IGraph *graph);
+    static IGraph *findMinimalSpanningTreePrim(const IGraph *graph);
 
     // graph must be connected
-    static IGraph* findMinimalSpanningTreeKruskal(const IGraph *graph);
+    static IGraph *findMinimalSpanningTreeKruskal(const IGraph *graph);
 
 private:
-    static const int INFINITY = 10000;
+    static const int INFINITY = std::numeric_limits<int>::max() / 4;
 
     static int getLimitedMinIdx(const int *table, const bool *isNotValid, int size);
 };

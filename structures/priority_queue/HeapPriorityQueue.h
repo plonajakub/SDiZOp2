@@ -6,10 +6,12 @@
 #include <iomanip>
 #include <exception>
 #include <stdexcept>
+#include <limits>
 
 #include "QueueNode.h"
 #include "../Table.h"
 #include "../graphs/misc/Edge.h"
+#include "../graphs/misc/DijkstraVertex.h"
 
 template <class T>
 class HeapPriorityQueue {
@@ -21,10 +23,19 @@ public:
 
     explicit HeapPriorityQueue(Type type) noexcept;
 
+    // specialized constructor for Dijkstra algorithm
+    explicit HeapPriorityQueue(Type type, int nVertex, int startVertexID);
+
     // Inserts key into heap
     void enqueue(const QueueNode<T> &node);
 
     T dequeue();
+
+    // specialized constructor for Dijkstra algorithm
+    void decreaseVertexKey(int vertexID, int newDistanceFromSource);
+
+    // specialized constructor for Dijkstra algorithm
+    DijkstraVertex operator[](int vertexID) const;
 
 //    // Removes key from heap
 //    void remove(int key);
@@ -44,8 +55,13 @@ public:
 
 private:
 
+    static const int INFINITY = std::numeric_limits<int>::max() / 4;
+
     // This heap is implemented as a table
     Table<QueueNode<T>> table;
+
+    // Specialized for Dijkstra algorithm
+    Table<int> vertexHeapIndex;
 
     const Type HEAP_TYPE;
 

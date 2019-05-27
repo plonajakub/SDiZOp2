@@ -9,6 +9,7 @@
 #include "priority_queue/QueueNode.h"
 #include "DoublyLinkedList.h"
 #include "graphs/misc/Edge.h"
+#include "graphs/misc/DijkstraVertex.h"
 
 template <class T>
 class Table {
