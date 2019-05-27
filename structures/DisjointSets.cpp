@@ -21,10 +21,12 @@ bool DisjointSets::checkSetsDifferent(int startVertexID, int endVertexID) {
 }
 
 void DisjointSets::unionSets(int startVertexID, int endVertexID) {
-    if (this->checkSetsDifferent(startVertexID, endVertexID)) {
+    int startVertexIDSet = sets[startVertexID];
+    int endVertexIDSet = sets[endVertexID];
+    if (startVertexIDSet != endVertexIDSet) {
         for (int i = 0; i < size; ++i) {
-            if (sets[i] == sets[startVertexID]) {
-                sets[i] = sets[endVertexID];
+            if (sets[i] == endVertexIDSet) {
+                sets[i] = startVertexIDSet;
             }
         }
     }
