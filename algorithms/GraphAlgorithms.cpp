@@ -75,7 +75,8 @@ GraphAlgorithms::findShortestPathDijkstraHeap(const IGraph *graph, int startVert
     delete[] isVertexVisited;
 }
 
-DoublyLinkedList<int> GraphAlgorithms::decodeShortestPath(const int *predecessorsOnPath, int endVertexID) {
+DoublyLinkedList<int>
+GraphAlgorithms::decodeShortestPath(const int *predecessorsOnPath, int startVertexID, int endVertexID) {
     Stack<int> stack;
     stack.push(endVertexID);
     int vertexID = endVertexID;
@@ -85,8 +86,14 @@ DoublyLinkedList<int> GraphAlgorithms::decodeShortestPath(const int *predecessor
     }
 
     DoublyLinkedList<int> foundPath;
-    while (!stack.isEmpty()) {
-        foundPath.insertAtEnd(stack.pop());
+    int firstVertex = stack.pop();
+    if (firstVertex == startVertexID) {
+        foundPath.insertAtEnd(firstVertex);
+        while (!stack.isEmpty()) {
+            foundPath.insertAtEnd(stack.pop());
+        }
+    } else {
+        foundPath.insertAtEnd(-1);
     }
     return foundPath;
 }

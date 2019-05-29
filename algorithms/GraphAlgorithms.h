@@ -19,7 +19,7 @@ public:
     static void
     findShortestPathDijkstraHeap(const IGraph *graph, int startVertexID, int endVertexID, int *outPredecessorsOnPath);
 
-    static DoublyLinkedList<int> decodeShortestPath(const int *predecessorsOnPath, int endVertexID);
+    static DoublyLinkedList<int> decodeShortestPath(const int *predecessorsOnPath, int startVertexID, int endVertexID);
 
     static void findShortestPathBellmanFord(const IGraph *graph, int startVertexID, bool *pathExists,
                                             int *predecessorsOnPath);
@@ -31,7 +31,7 @@ public:
     static IGraph *findMinimalSpanningTreeKruskal(const IGraph *graph);
 
     static IGraph *findMaximalFlowFordFulkersonBfs(const IGraph *graph, int startVertexID, int endVertexID,
-                                         int *maxFlow);
+                                                   int *maxFlow);
 
     static IGraph *findMaximalFlowFordFulkersonDfs(const IGraph *graph, int startVertexID, int endVertexID,
                                                    int *maxFlow);

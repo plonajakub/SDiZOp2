@@ -112,3 +112,47 @@ bool GraphUtils::isGraphConnected(const IGraph *graph) {
     delete tmpGraph;
     return visitedVerticesCount == undirectedGraph->getVertexCount();
 }
+
+void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
+                                                IGraph::GraphStructure structure, int nVertex, double density) {
+    switch (algorithm) {
+        case Dijkstra:
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, 0, 100);
+            break;
+        case Bellman_Ford:
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, -100, 100);
+            break;
+        case Kruskal:
+            *pGraph = nullptr;
+            do {
+                delete *pGraph;
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -10000,
+                                            10000);
+            } while (!GraphUtils::isGraphConnected(*pGraph));
+            break;
+        case Prim:
+            *pGraph = nullptr;
+            do {
+                delete *pGraph;
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -10000,
+                                            10000);
+            } while (!GraphUtils::isGraphConnected(*pGraph));
+            break;
+        case Ford_Fulkerson:
+            *pGraph = nullptr;
+            do {
+                delete *pGraph;
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, -100,
+                                            100);
+            } while (!GraphUtils::isGraphConnected(*pGraph));
+            DoublyLinkedList<int> predecessors = (*pGraph)->getVertexPredecessors(0);
+            for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it)  {
+                (*pGraph)->removeEdge(it.getData(), 0);
+            }
+            predecessors = (*pGraph)->getVertexPredecessors(nVertex - 1);
+            for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it)  {
+                (*pGraph)->removeEdge(nVertex - 1, it.getData());
+            }
+            break;
+    }
+}

@@ -14,12 +14,19 @@
 class GraphUtils {
 public:
 
+    enum Algorithm {
+        Dijkstra, Bellman_Ford, Kruskal, Prim, Ford_Fulkerson
+    };
+
     static void loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type,
                                  const std::string &fileName);
 
     // Density in %
     static void loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type, int nVertex,
                                 double density, int parameterMin, int parameterMax);
+
+    static void loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
+                                               IGraph::GraphStructure structure, int nVertex, double density);
 
     static bool isGraphConnected(const IGraph *graph);
 
