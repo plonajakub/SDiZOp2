@@ -126,16 +126,16 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -10000,
-                                            10000);
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -100,
+                                            100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
         case Prim:
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -10000,
-                                            10000);
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -100,
+                                            100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
         case Ford_Fulkerson:

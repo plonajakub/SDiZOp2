@@ -41,6 +41,8 @@ public:
 
     GraphType getGraphType() const override;
 
+    GraphStructure getGraphStructure() const;
+
 private:
 
     void addVertex() override;

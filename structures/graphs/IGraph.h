@@ -43,6 +43,8 @@ public:
 
     virtual GraphType getGraphType() const = 0;
 
+    virtual GraphStructure getGraphStructure() const = 0;
+
 private:
 
     virtual void addVertex() = 0;

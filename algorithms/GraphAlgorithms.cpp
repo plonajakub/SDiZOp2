@@ -168,7 +168,15 @@ int GraphAlgorithms::getLimitedMinIdx(const int *table, const bool *isNotValid, 
 IGraph *GraphAlgorithms::findMinimalSpanningTreePrim(const IGraph *graph) {
     int vertexCount = graph->getVertexCount();
     HeapPriorityQueue<Edge> edges(HeapPriorityQueue<Edge>::Type::Min);
-    IGraph *spanningTree = new ListGraph(ListGraph::GraphType::Undirected, vertexCount);
+    IGraph *spanningTree;
+    switch (graph->getGraphStructure()) {
+        case IGraph::IncidenceMatrix:
+            spanningTree = new MatrixGraph(ListGraph::GraphType::Undirected, vertexCount);
+            break;
+        case IGraph::AdjacencyList:
+            spanningTree = new ListGraph(ListGraph::GraphType::Undirected, vertexCount);
+            break;
+    }
     bool *isPartOfTree = new bool[vertexCount];
 
     for (int i = 0; i < vertexCount; ++i) {
@@ -208,7 +216,15 @@ IGraph *GraphAlgorithms::findMinimalSpanningTreeKruskal(const IGraph *graph) {
     int vertexCount = graph->getVertexCount();
     DisjointSets vertexSets(vertexCount);
     HeapPriorityQueue<Edge> edges(HeapPriorityQueue<Edge>::Type::Min);
-    IGraph *tree = new ListGraph(IGraph::GraphType::Undirected, vertexCount);
+    IGraph *tree;
+    switch (graph->getGraphStructure()) {
+        case IGraph::IncidenceMatrix:
+            tree = new MatrixGraph(IGraph::GraphType::Undirected, vertexCount);
+            break;
+        case IGraph::AdjacencyList:
+            tree = new ListGraph(IGraph::GraphType::Undirected, vertexCount);
+            break;
+    }
 
     auto vertices = graph->getVertices();
     DoublyLinkedList<int> successors;
@@ -238,7 +254,16 @@ IGraph *GraphAlgorithms::findMaximalFlowFordFulkersonBfs(const IGraph *graph, in
                                                          int *maxFlow) {
     int graphVertexCount = graph->getVertexCount();
     *maxFlow = 0;
-    IGraph *flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+    IGraph *flowGraph;
+    switch (graph->getGraphStructure()) {
+        case IGraph::IncidenceMatrix:
+            flowGraph = new MatrixGraph(ListGraph::GraphType::Directed, graphVertexCount);
+            break;
+        case IGraph::AdjacencyList:
+            flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+            break;
+    }
+
     auto graphVertices = graph->getVertices();
     DoublyLinkedList<int> successors;
     for (auto vIt = graphVertices.getIterator(); vIt != graphVertices.getEndIt(); ++vIt) {
@@ -305,7 +330,15 @@ IGraph *GraphAlgorithms::findMaximalFlowFordFulkersonDfs(const IGraph *graph, in
                                                          int *maxFlow) {
     int graphVertexCount = graph->getVertexCount();
     *maxFlow = 0;
-    IGraph *flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+    IGraph *flowGraph;
+    switch (graph->getGraphStructure()) {
+        case IGraph::IncidenceMatrix:
+            flowGraph = new MatrixGraph(ListGraph::GraphType::Directed, graphVertexCount);
+            break;
+        case IGraph::AdjacencyList:
+            flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+            break;
+    }
     auto graphVertices = graph->getVertices();
     DoublyLinkedList<int> successors;
     for (auto vIt = graphVertices.getIterator(); vIt != graphVertices.getEndIt(); ++vIt) {

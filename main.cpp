@@ -7,6 +7,8 @@
 #include "tests/GraphUtilsTest.h"
 #include "tests/AlgorithmsTest.h"
 
+#include "menu/ConsoleMenu.h"
+
 using std::cout;
 using std::endl;
 
@@ -25,8 +27,11 @@ int main() {
 //    GraphUtilsTest gut;
 //    gut.run();
 
-    AlgorithmsTest at;
-    at.run();
+//    AlgorithmsTest at;
+//    at.run();
+
+    ConsoleMenu cm;
+    cm.start();
 
     return 0;
 }

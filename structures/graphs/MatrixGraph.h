@@ -56,6 +56,8 @@ public:
 
     GraphType getGraphType() const override;
 
+    GraphStructure getGraphStructure() const;
+
     static const int EDGE_NOT_PRESENT = -2;
 
     static const int VERTEX_NOT_PRESENT = -1;

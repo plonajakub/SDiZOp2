@@ -278,4 +278,8 @@ IGraph::GraphType MatrixGraph::getGraphType() const {
     return TYPE;
 }
 
+IGraph::GraphStructure MatrixGraph::getGraphStructure() const {
+    return IncidenceMatrix;
+}
+
 

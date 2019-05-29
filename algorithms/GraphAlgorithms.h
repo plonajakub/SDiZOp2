@@ -5,6 +5,7 @@
 
 #include "../structures/graphs/IGraph.h"
 #include "../structures/graphs/ListGraph.h"
+#include "../structures/graphs/MatrixGraph.h"
 #include "../structures/Table.h"
 #include "../structures/DoublyLinkedList.h"
 #include "../structures/Stack.h"

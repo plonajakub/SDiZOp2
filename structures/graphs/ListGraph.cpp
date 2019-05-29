@@ -162,3 +162,7 @@ std::string ListGraph::toString() const {
 IGraph::GraphType ListGraph::getGraphType() const {
     return TYPE;
 }
+
+IGraph::GraphStructure ListGraph::getGraphStructure() const {
+    return AdjacencyList;
+}
