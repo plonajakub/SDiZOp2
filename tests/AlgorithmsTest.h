@@ -22,6 +22,8 @@ private:
     void findShortestPathBellmanFordTest();
     void findMinimalSpanningTreePrim();
     void findMinimalSpanningTreeKruskal();
+    void findMaximalFlowFordFulkersonBfsTest();
+    void findMaximalFlowFordFulkersonDfsTest();
 };
 
 

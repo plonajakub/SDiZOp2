@@ -226,3 +226,137 @@ IGraph *GraphAlgorithms::findMinimalSpanningTreeKruskal(const IGraph *graph) {
     }
     return tree;
 }
+
+IGraph *GraphAlgorithms::findMaximalFlowFordFulkersonBfs(const IGraph *graph, int startVertexID, int endVertexID,
+                                                         int *maxFlow) {
+    int graphVertexCount = graph->getVertexCount();
+    *maxFlow = 0;
+    IGraph *flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+    auto graphVertices = graph->getVertices();
+    DoublyLinkedList<int> successors;
+    for (auto vIt = graphVertices.getIterator(); vIt != graphVertices.getEndIt(); ++vIt) {
+        successors = graph->getVertexSuccessors(vIt.getData());
+        for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+            flowGraph->addEdge(vIt.getData(), sIt.getData(), 0);
+        }
+    }
+    int *bfsPredecessorsOnPath = new int[graphVertexCount];
+    int *augmentingPathFlow = new int[graphVertexCount];
+    DoublyLinkedList<int> *bfsVertexQueue = nullptr;
+    int currentVertex, currentSuccessor = -1, currentResidualCapacity;
+    bool augmentingPathFound;
+    while (true) {
+        for (int i = 0; i < graphVertexCount; ++i) {
+            bfsPredecessorsOnPath[i] = -1;
+        }
+        bfsPredecessorsOnPath[startVertexID] = -2;
+        augmentingPathFlow[startVertexID] = INFINITY;
+        augmentingPathFound = false;
+        delete bfsVertexQueue;
+        bfsVertexQueue = new DoublyLinkedList<int>;
+        bfsVertexQueue->insertAtEnd(startVertexID);
+        while (!bfsVertexQueue->isEmpty() && !augmentingPathFound) {
+            currentVertex = bfsVertexQueue->removeFromStart();
+            successors = graph->getVertexSuccessors(currentVertex);
+            for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+                currentSuccessor = sIt.getData();
+                currentResidualCapacity = graph->getEdgeParameter(currentVertex, currentSuccessor) -
+                                          flowGraph->getEdgeParameter(currentVertex, currentSuccessor);
+                if (currentResidualCapacity != 0 && bfsPredecessorsOnPath[currentSuccessor] == -1) {
+                    bfsPredecessorsOnPath[currentSuccessor] = currentVertex;
+                    augmentingPathFlow[currentSuccessor] = ((currentResidualCapacity <
+                                                             augmentingPathFlow[currentVertex])
+                                                            ? currentResidualCapacity
+                                                            : augmentingPathFlow[currentVertex]);
+                    if (currentSuccessor == endVertexID) {
+                        augmentingPathFound = true;
+                        break;
+                    }
+                    bfsVertexQueue->insertAtEnd(currentSuccessor);
+                }
+            }
+        }
+        if (augmentingPathFound) {
+            *maxFlow = *maxFlow + augmentingPathFlow[endVertexID];
+            while (currentSuccessor != startVertexID) {
+                currentVertex = bfsPredecessorsOnPath[currentSuccessor];
+                flowGraph->setEdgeParameter(currentVertex, currentSuccessor,
+                                            flowGraph->getEdgeParameter(currentVertex, currentSuccessor) +
+                                            augmentingPathFlow[endVertexID]);
+                currentSuccessor = currentVertex;
+            }
+            continue;
+        }
+        break;
+    }
+    delete[] bfsPredecessorsOnPath;
+    delete[] augmentingPathFlow;
+    return flowGraph;
+}
+
+IGraph *GraphAlgorithms::findMaximalFlowFordFulkersonDfs(const IGraph *graph, int startVertexID, int endVertexID,
+                                                         int *maxFlow) {
+    int graphVertexCount = graph->getVertexCount();
+    *maxFlow = 0;
+    IGraph *flowGraph = new ListGraph(ListGraph::GraphType::Directed, graphVertexCount);
+    auto graphVertices = graph->getVertices();
+    DoublyLinkedList<int> successors;
+    for (auto vIt = graphVertices.getIterator(); vIt != graphVertices.getEndIt(); ++vIt) {
+        successors = graph->getVertexSuccessors(vIt.getData());
+        for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+            flowGraph->addEdge(vIt.getData(), sIt.getData(), 0);
+        }
+    }
+    int *bfsPredecessorsOnPath = new int[graphVertexCount];
+    int *augmentingPathFlow = new int[graphVertexCount];
+    Stack<int> *dfsVertexStack = nullptr;
+    int currentVertex, currentSuccessor = -1, currentResidualCapacity;
+    bool augmentingPathFound;
+    while (true) {
+        for (int i = 0; i < graphVertexCount; ++i) {
+            bfsPredecessorsOnPath[i] = -1;
+        }
+        bfsPredecessorsOnPath[startVertexID] = -2;
+        augmentingPathFlow[startVertexID] = INFINITY;
+        augmentingPathFound = false;
+        delete dfsVertexStack;
+        dfsVertexStack = new Stack<int>;
+        dfsVertexStack->push(startVertexID);
+        while (!dfsVertexStack->isEmpty() && !augmentingPathFound) {
+            currentVertex = dfsVertexStack->pop();
+            successors = graph->getVertexSuccessors(currentVertex);
+            for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+                currentSuccessor = sIt.getData();
+                currentResidualCapacity = graph->getEdgeParameter(currentVertex, currentSuccessor) -
+                                          flowGraph->getEdgeParameter(currentVertex, currentSuccessor);
+                if (currentResidualCapacity != 0 && bfsPredecessorsOnPath[currentSuccessor] == -1) {
+                    bfsPredecessorsOnPath[currentSuccessor] = currentVertex;
+                    augmentingPathFlow[currentSuccessor] = ((currentResidualCapacity <
+                                                             augmentingPathFlow[currentVertex])
+                                                            ? currentResidualCapacity
+                                                            : augmentingPathFlow[currentVertex]);
+                    if (currentSuccessor == endVertexID) {
+                        augmentingPathFound = true;
+                        break;
+                    }
+                    dfsVertexStack->push(currentSuccessor);
+                }
+            }
+        }
+        if (augmentingPathFound) {
+            *maxFlow = *maxFlow + augmentingPathFlow[endVertexID];
+            while (currentSuccessor != startVertexID) {
+                currentVertex = bfsPredecessorsOnPath[currentSuccessor];
+                flowGraph->setEdgeParameter(currentVertex, currentSuccessor,
+                                            flowGraph->getEdgeParameter(currentVertex, currentSuccessor) +
+                                            augmentingPathFlow[endVertexID]);
+                currentSuccessor = currentVertex;
+            }
+            continue;
+        }
+        break;
+    }
+    delete[] bfsPredecessorsOnPath;
+    delete[] augmentingPathFlow;
+    return flowGraph;
+}

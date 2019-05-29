@@ -132,18 +132,20 @@ void DoublyLinkedList<T>::remove(int index) {
 }
 
 template <class T>
-void DoublyLinkedList<T>::removeFromStart() {
+T DoublyLinkedList<T>::removeFromStart() {
     // Check if list is empty
     if (size == 0) {
         throw std::out_of_range("removeFromStart() failed: list is empty");
     }
 
+    T data = sentry->next->data;
     // Remove the node at start of the list
     auto *head = sentry->next;
     sentry->next = head->next;
     head->next->prev = sentry;
     delete head;
     --size;
+    return data;
 }
 
 template <class T>

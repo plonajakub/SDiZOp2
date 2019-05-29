@@ -30,6 +30,12 @@ public:
     // graph must be connected
     static IGraph *findMinimalSpanningTreeKruskal(const IGraph *graph);
 
+    static IGraph *findMaximalFlowFordFulkersonBfs(const IGraph *graph, int startVertexID, int endVertexID,
+                                         int *maxFlow);
+
+    static IGraph *findMaximalFlowFordFulkersonDfs(const IGraph *graph, int startVertexID, int endVertexID,
+                                                   int *maxFlow);
+
 private:
     static const int INFINITY = std::numeric_limits<int>::max() / 4;
 

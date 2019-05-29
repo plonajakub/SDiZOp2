@@ -35,17 +35,21 @@ void HeapPriorityQueueTest::testExtractFront() {
     HeapPriorityQueue<int> queue(HeapPriorityQueue<int>::Type::Min);
     QueueNode<int> node;
     node.key = 5;
+    node.data = 11;
     queue.enqueue(node);
     node.key = 15;
+    node.data = 13;
     queue.enqueue(node);
     node.key = 1;
+    node.data = 10;
     queue.enqueue(node);
     node.key = 10;
+    node.data = 12;
     queue.enqueue(node);
 
-    assert(queue.dequeue() == 1);
-    assert(queue.dequeue() == 5);
     assert(queue.dequeue() == 10);
-    assert(queue.dequeue() == 15);
+    assert(queue.dequeue() == 11);
+    assert(queue.dequeue() == 12);
+    assert(queue.dequeue() == 13);
     assert(queue.table.getSize() == 0);
 }

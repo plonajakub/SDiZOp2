@@ -31,6 +31,8 @@ public:
 
     virtual int getEdgeParameter(int startVertexID, int endVertexID) const = 0;
 
+    virtual void setEdgeParameter(int startVertexID, int endVertexID, int parameter) = 0;
+
     virtual int getVertexCount() const = 0;
 
     virtual int getEdgeCount() const = 0;

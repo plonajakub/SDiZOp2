@@ -102,16 +102,20 @@ int ListGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
     return parametersMatrix[startVertexID][endVertexID];
 }
 
+void ListGraph::setEdgeParameter(int startVertexID, int endVertexID, int parameter) {
+    parametersMatrix[startVertexID][endVertexID] = parameter;
+}
+
 //ok
 int ListGraph::getVertexCount() const {
     return successorsLists.getSize();
 }
 
+
 //ok
 int ListGraph::getEdgeCount() const {
     return edgeCount;
 }
-
 
 //ok
 double ListGraph::getDensity() const {

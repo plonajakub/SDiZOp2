@@ -147,7 +147,15 @@ int MatrixGraph::getEdgeParameter(int startVertexID, int endVertexID) const {
     } else {
         return std::numeric_limits<int>::max();
     }
+}
 
+void MatrixGraph::setEdgeParameter(int startVertexID, int endVertexID, int parameter) {
+    int edgeID = this->getEdgeIdFromVertexes(startVertexID, endVertexID);
+    if (edgeID != EDGE_NOT_PRESENT) {
+        this->edgeParameters[edgeID] = parameter;
+    } else {
+        throw std::exception();
+    }
 }
 
 //ok

@@ -87,7 +87,7 @@ public:
     void remove(int index);
 
     // Removes node from beginning of the list
-    void removeFromStart();
+    T removeFromStart();
 
     // Removes node from end of the list
     void removeFromEnd();

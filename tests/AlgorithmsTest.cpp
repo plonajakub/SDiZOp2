@@ -12,15 +12,21 @@ void AlgorithmsTest::run() {
 //    pStartInfo("findShortestPathDijkstraHeapTest");
 //    findShortestPathDijkstraHeapTest();
 //    pEndInfo("findShortestPathDijkstraHeapTest");
-    pStartInfo("findShortestPathBellmanFordTest");
-    findShortestPathBellmanFordTest();
-    pEndInfo("findShortestPathBellmanFordTest");
+//    pStartInfo("findShortestPathBellmanFordTest");
+//    findShortestPathBellmanFordTest();
+//    pEndInfo("findShortestPathBellmanFordTest");
 //    pStartInfo("findMinimalSpanningTreePrim");
 //    findMinimalSpanningTreePrim();
 //    pEndInfo("findMinimalSpanningTreePrim");
 //    pStartInfo("findMinimalSpanningTreeKruskal");
 //    findMinimalSpanningTreeKruskal();
 //    pEndInfo("findMinimalSpanningTreeKruskal");
+//    pStartInfo("findMaximalFlowFordFulkersonBfsTest");
+//    findMaximalFlowFordFulkersonBfsTest();
+//    pEndInfo("findMaximalFlowFordFulkersonBfsTest");
+    pStartInfo("findMaximalFlowFordFulkersonDfsTest");
+    findMaximalFlowFordFulkersonDfsTest();
+    pEndInfo("findMaximalFlowFordFulkersonDfsTest");
 }
 
 void AlgorithmsTest::findShortestPathDijkstraTest() {
@@ -153,4 +159,60 @@ void AlgorithmsTest::findMinimalSpanningTreeKruskal() {
     cout << "Minimal spanning tree (AdjacencyList)\n" << *minimalSpanningTree << endl;
     delete graph;
     delete minimalSpanningTree;
+}
+
+void AlgorithmsTest::findMaximalFlowFordFulkersonBfsTest() {
+    IGraph *capacityNetwork;
+    IGraph *flowNetwork;
+    int maxFlow;
+    int startVertexID = 2;
+    int endVertexId = 4;
+
+    GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
+                                 "ford_fulkerson_flow_network.txt");
+    cout << "Capacity network (IncidenceMatrix)\n" << *capacityNetwork << endl;
+    flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(capacityNetwork, startVertexID, endVertexId,
+                                                                   &maxFlow);
+    cout << "Flow network\n" << *flowNetwork << endl;
+    cout << "Max flow = " << maxFlow << endl;
+    delete capacityNetwork;
+    delete flowNetwork;
+
+    GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
+                                 "ford_fulkerson_flow_network.txt");
+    cout << "Capacity network (AdjacencyList)\n" << *capacityNetwork << endl;
+    flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(capacityNetwork, startVertexID, endVertexId,
+                                                                   &maxFlow);
+    cout << "Flow network\n" << *flowNetwork << endl;
+    cout << "Max flow = " << maxFlow << endl;
+    delete capacityNetwork;
+    delete flowNetwork;
+}
+
+void AlgorithmsTest::findMaximalFlowFordFulkersonDfsTest() {
+    IGraph *capacityNetwork;
+    IGraph *flowNetwork;
+    int maxFlow;
+    int startVertexID = 2;
+    int endVertexId = 4;
+
+    GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
+                                 "ford_fulkerson_flow_network.txt");
+    cout << "Capacity network (IncidenceMatrix)\n" << *capacityNetwork << endl;
+    flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(capacityNetwork, startVertexID, endVertexId,
+                                                                   &maxFlow);
+    cout << "Flow network\n" << *flowNetwork << endl;
+    cout << "Max flow = " << maxFlow << endl;
+    delete capacityNetwork;
+    delete flowNetwork;
+
+    GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
+                                 "ford_fulkerson_flow_network.txt");
+    cout << "Capacity network (AdjacencyList)\n" << *capacityNetwork << endl;
+    flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(capacityNetwork, startVertexID, endVertexId,
+                                                                   &maxFlow);
+    cout << "Flow network\n" << *flowNetwork << endl;
+    cout << "Max flow = " << maxFlow << endl;
+    delete capacityNetwork;
+    delete flowNetwork;
 }

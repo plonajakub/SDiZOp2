@@ -33,6 +33,8 @@ public:
 
     int getEdgeParameter(int startVertexID, int endVertexID) const override;
 
+    void setEdgeParameter(int startVertexID, int endVertexID, int parameter) override;
+
     int getEdgeParameter(int edgeID) const;
 
     // Table[0]: startVertexID
