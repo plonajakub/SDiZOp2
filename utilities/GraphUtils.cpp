@@ -52,7 +52,7 @@ void GraphUtils::loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structu
             ++fails;
         }
     }
-    std::cout << "addEdge() fails: " << fails << std::endl;
+//    std::cout << "addEdge() fails: " << fails << std::endl;
 }
 
 int GraphUtils::getRand(int leftLimit, int rightLimit) {
@@ -110,47 +110,61 @@ bool GraphUtils::isGraphConnected(const IGraph *graph) {
 
     delete[] isVertexVisited;
     delete tmpGraph;
-    return visitedVerticesCount == undirectedGraph->getVertexCount();
+    return visitedVerticesCount == graph->getVertexCount();
 }
 
 void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
-                                                IGraph::GraphStructure structure, int nVertex, double density) {
+                                                IGraph::GraphStructure structure, int nVertex, double densityInPercents) {
+    if (nVertex < 1 || densityInPercents < 0 || densityInPercents > 100) {
+        throw std::invalid_argument("Number of vertex invalid!");
+    }
+    if (densityInPercents < 0 || densityInPercents > 100) {
+        throw std::invalid_argument("Density invalid!");
+    }
+    double minimalDensityInPercents;
     switch (algorithm) {
         case Dijkstra:
-            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, 0, 100);
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0, 100);
             break;
         case Bellman_Ford:
-            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, -100, 100);
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, -100, 100);
             break;
         case Kruskal:
-            *pGraph = nullptr;
-            do {
-                delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -100,
-                                            100);
-            } while (!GraphUtils::isGraphConnected(*pGraph));
-            break;
         case Prim:
+            minimalDensityInPercents = (static_cast<double>(2) / nVertex) * 100 + 1;
+            if (densityInPercents < minimalDensityInPercents) {
+                densityInPercents = minimalDensityInPercents;
+                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal"
+                          << std::endl;
+            }
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, density, -100,
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, densityInPercents, -100,
                                             100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
         case Ford_Fulkerson:
+            minimalDensityInPercents = (static_cast<double>(2) / nVertex) * 100 + 1;
+            if (densityInPercents < minimalDensityInPercents) {
+                densityInPercents = minimalDensityInPercents;
+                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal + 1"
+                          << std::endl;
+            }
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, density, -100,
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0,
                                             100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
+            // Net source is always the vertex with ID = 0
+            // Net sink is always the vertex with ID =  nVertex - 1
             DoublyLinkedList<int> predecessors = (*pGraph)->getVertexPredecessors(0);
-            for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it)  {
+            for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it) {
                 (*pGraph)->removeEdge(it.getData(), 0);
             }
-            predecessors = (*pGraph)->getVertexPredecessors(nVertex - 1);
-            for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it)  {
+            auto successors = (*pGraph)->getVertexSuccessors(nVertex - 1);
+            for (auto it = successors.getIterator(); it != successors.getEndIt(); ++it) {
                 (*pGraph)->removeEdge(nVertex - 1, it.getData());
             }
             break;

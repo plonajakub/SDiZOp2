@@ -9,13 +9,17 @@
 #include <stdexcept>
 
 #include "IGraph.h"
+#include "ListGraph.h"
 #include "../Table.h"
 #include "../DoublyLinkedList.h"
 #include "misc/Edge.h"
 
+class ListGraph;
 
 class MatrixGraph : public IGraph {
 public:
+
+    explicit MatrixGraph(const ListGraph *lGraph);
 
     MatrixGraph(GraphType graphType, int nVertex);
 

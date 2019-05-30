@@ -10,6 +10,24 @@ MatrixGraph::MatrixGraph(GraphType graphType, int nVertex) : TYPE(graphType) {
     }
 }
 
+MatrixGraph::MatrixGraph(const ListGraph *lGraph) : TYPE(lGraph->getGraphType()) {
+    for (int i = 0; i < lGraph->getVertexCount(); ++i) {
+        this->addVertex();
+    }
+    auto vertices = lGraph->getVertices();
+    DoublyLinkedList<int> successors;
+    for (auto vIt = vertices.getIterator(); vIt != vertices.getEndIt(); ++vIt) {
+        successors = lGraph->getVertexSuccessors(vIt.getData());
+        for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+            try {
+                this->addEdge(vIt.getData(), sIt.getData(), lGraph->getEdgeParameter(vIt.getData(), sIt.getData()));
+            } catch (const std::invalid_argument &e) {
+                // Skip already added edge
+            }
+        }
+    }
+}
+
 //ok
 void MatrixGraph::addVertex() {
     incidenceMatrix.insertAtEnd(Table<int>());
@@ -281,5 +299,7 @@ IGraph::GraphType MatrixGraph::getGraphType() const {
 IGraph::GraphStructure MatrixGraph::getGraphStructure() const {
     return IncidenceMatrix;
 }
+
+
 
 

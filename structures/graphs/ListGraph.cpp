@@ -10,6 +10,24 @@ ListGraph::ListGraph(ListGraph::GraphType graphType, int nVertex) : TYPE(graphTy
     }
 }
 
+ListGraph::ListGraph(const MatrixGraph *mGraph) : TYPE(mGraph->getGraphType()), edgeCount(0) {
+    auto vertices = mGraph->getVertices();
+    for (int i = 0; i < vertices.getSize(); ++i) {
+        this->addVertex();
+    }
+    DoublyLinkedList<int> successors;
+    for (auto vIt = vertices.getIterator(); vIt != vertices.getEndIt(); ++vIt) {
+        successors = mGraph->getVertexSuccessors(vIt.getData());
+        for (auto sIt = successors.getIterator(); sIt != successors.getEndIt(); ++sIt) {
+            try {
+                this->addEdge(vIt.getData(), sIt.getData(), mGraph->getEdgeParameter(vIt.getData(), sIt.getData()));
+            } catch (const std::invalid_argument &e) {
+                // Skip already added edge
+            }
+        }
+    }
+}
+
 //ok
 void ListGraph::addVertex() {
     successorsLists.insertAtEnd(DoublyLinkedList<int>());
@@ -106,11 +124,11 @@ void ListGraph::setEdgeParameter(int startVertexID, int endVertexID, int paramet
     parametersMatrix[startVertexID][endVertexID] = parameter;
 }
 
+
 //ok
 int ListGraph::getVertexCount() const {
     return successorsLists.getSize();
 }
-
 
 //ok
 int ListGraph::getEdgeCount() const {

@@ -72,7 +72,6 @@ private:
     // Data
     IGraph *matrixGraph;
     IGraph *listGraph;
-    GraphSource graphSource;
     int nVertex;
     int density;
 

@@ -7,13 +7,17 @@
 #include <stdexcept>
 
 #include "IGraph.h"
+#include "MatrixGraph.h"
 #include "../Table.h"
 #include "../DoublyLinkedList.h"
 
+class MatrixGraph;
 
 // Loops and multiple edges disallowed
 class ListGraph : public IGraph {
 public:
+
+    explicit ListGraph(const MatrixGraph *mGraph);
 
     ListGraph(GraphType graphType, int nVertex);
 

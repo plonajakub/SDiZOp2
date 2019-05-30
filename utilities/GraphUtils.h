@@ -11,6 +11,7 @@
 #include "../structures/graphs/MatrixGraph.h"
 #include "../structures/Stack.h"
 
+
 class GraphUtils {
 public:
 
@@ -26,7 +27,7 @@ public:
                                 double density, int parameterMin, int parameterMax);
 
     static void loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
-                                               IGraph::GraphStructure structure, int nVertex, double density);
+                                               IGraph::GraphStructure structure, int nVertex, double densityInPercents);
 
     static bool isGraphConnected(const IGraph *graph);
 

@@ -79,6 +79,10 @@ int ConsoleMenu::getMenuControlVariable(const std::string &menuCode) {
 
 ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &menuCode, int menuControlVariable) {
     if (menuControlVariable == 0 && !menuCode.empty()) {
+        delete matrixGraph;
+        matrixGraph = nullptr;
+        delete listGraph;
+        listGraph = nullptr;
         cout << "--- RETURN ---" << endl;
         return ProgramState::RETURN;
     }
@@ -99,9 +103,8 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
         GraphUtils::loadGraphFromTxt(&matrixGraph, IGraph::GraphStructure::IncidenceMatrix,
                                      IGraph::GraphType::Undirected, "undirected_graph.txt");
         delete listGraph;
-        GraphUtils::loadGraphFromTxt(&listGraph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected,
-                                     "undirected_graph.txt");
-        cout << "Graph loaded from the file!" << endl;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Graphs has been loaded from the file!" << endl;
     } else if (operationCode == "12") {
         cout << "Enter number of vertices:";
         cin >> nVertex;
@@ -109,12 +112,17 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
         cin >> density;
         cout << endl;
         delete matrixGraph;
-        GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Kruskal,
-                                                   IGraph::GraphStructure::IncidenceMatrix, nVertex, density);
+        try {
+            GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Kruskal,
+                                                       IGraph::GraphStructure::IncidenceMatrix, nVertex, density);
+        } catch (const std::invalid_argument &e) {
+            cout << e.what() << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
         delete listGraph;
-        GraphUtils::loadRandomGraphWithConstraints(&listGraph, GraphUtils::Algorithm::Kruskal,
-                                                   IGraph::GraphStructure::AdjacencyList, nVertex, density);
-        cout << "Random graph generated!" << endl;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Random graphs generated!" << endl;
     } else if (operationCode == "13") {
         if (listGraph != nullptr && matrixGraph != nullptr) {
             cout << "--- Incidence matrix graph representation ---" << endl;
@@ -122,123 +130,279 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
             cout << "--- Adjacency list graph representation ---" << endl;
             cout << *listGraph << endl;
         } else {
-            cout << "No graph has been loaded: build a graph first!" << endl;
+            cout << "Error: graphs have not been loaded!" << endl;
         }
     } else if (operationCode == "14") {
-        IGraph *minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(matrixGraph);
-        cout << "Minimal spanning tree (Kruskal - incidence matrix)\n" << *minimalSpanningTree << endl;
-        delete minimalSpanningTree;
+        if (listGraph != nullptr && matrixGraph != nullptr) {
+            int mstTotalWeight;
+            IGraph *minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(matrixGraph, &mstTotalWeight);
+            cout << "Minimal spanning tree (Kruskal - incidence matrix)\n" << *minimalSpanningTree << endl;
+            cout << "Total weight = " << mstTotalWeight << endl << endl;
+            delete minimalSpanningTree;
 
-        minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(listGraph);
-        cout << "Minimal spanning tree (Kruskal - adjacency list)\n" << *minimalSpanningTree << endl;
-        delete minimalSpanningTree;
+            minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(listGraph, &mstTotalWeight);
+            cout << "Minimal spanning tree (Kruskal - adjacency lists)\n" << *minimalSpanningTree << endl;
+            cout << "Total weight = " << mstTotalWeight << endl;
+            delete minimalSpanningTree;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
+        }
     } else if (operationCode == "15") {
-        IGraph *minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(matrixGraph);
-        cout << "Minimal spanning tree (Prim - incidence matrix)\n" << *minimalSpanningTree << endl;
-        delete minimalSpanningTree;
+        if (listGraph != nullptr && matrixGraph != nullptr) {
+            int mstTotalWeight;
+            IGraph *minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(matrixGraph, &mstTotalWeight);
+            cout << "Minimal spanning tree (Prim - incidence matrix)\n" << *minimalSpanningTree << endl;
+            cout << "Total weight = " << mstTotalWeight << endl << endl;
+            delete minimalSpanningTree;
 
-        minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(listGraph);
-        cout << "Minimal spanning tree (Prim - adjacency list)\n" << *minimalSpanningTree << endl;
-        delete minimalSpanningTree;
+            minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(listGraph, &mstTotalWeight);
+            cout << "Minimal spanning tree (Prim - adjacency lists)\n" << *minimalSpanningTree << endl;
+            cout << "Total weight = " << mstTotalWeight << endl;
+            delete minimalSpanningTree;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
+        }
         /////////////////////////////////////////////////////////////////
-        //// List - operations
+        //// Shortest path - operations
         /////////////////////////////////////////////////////////////////
     } else if (operationCode == "21") {
-//        cout << endl;
-//        try {
-//            Table inputData = this->loadDataFromFile("build_list.txt");
-//            for (int i = 0; i < inputData.getSize(); ++i) {
-//                dll->insertAtEnd(inputData[i]);
-//            }
-//            cout << "Data successfully loaded into the list!" << endl;
-//            cout << "List after load: " << *dll << endl;
-//        } catch (const std::ios_base::failure &e) {
-//            cout << "List not affected" << endl;
-//        }
-//    } else if (operationCode == "22") {
-//        int value;
-//        cout << "Enter a value to be removed:";
-//        cin >> value;
-//        cout << endl;
-//        try {
-//            dll->removeByValue(value);
-//        } catch (const std::out_of_range &e) {
-//            cout << "No such value in the list!" << endl;
-//        }
-//        cout << "List after removal: " << *dll << endl;
-//    } else if (operationCode == "23") {
-//        int searchValue, insertValue;
-//        cout << "Enter a base value:";
-//        cin >> searchValue;
-//        cout << "Enter a new value:";
-//        cin >> insertValue;
-//        cout << endl;
-//        dll->insertAfterValue(searchValue, insertValue);
-//        cout << "List after insertion: " << *dll << endl;
-//    } else if (operationCode == "24") {
-//        int value;
-//        cout << "Enter value to be searched for in the list:";
-//        cin >> value;
-//        cout << endl;
-//        int index = dll->search(value);
-//        if (index != DoublyLinkedList::VALUE_NOT_FOUND) {
-//            cout << "Entered value is in the list" << endl;
-//        } else {
-//            cout << "Entered value is not in the list" << endl;
-//        }
-//    } else if (operationCode == "25") {
-//        cout << endl;
-//        cout << "List: " << *dll << endl;
-//        /////////////////////////////////////////////////////////////////
-//        //// Heap - operations
-//        /////////////////////////////////////////////////////////////////
-//    } else if (operationCode == "31") {
-//        cout << endl;
-//        try {
-//            Table inputData = this->loadDataFromFile("build_heap.txt");
-//            for (int i = 0; i < inputData.getSize(); ++i) {
-//                heap->insert(inputData[i]);
-//            }
-//            cout << "Data successfully loaded into the heap!" << endl;
-//            cout << "Heap after load: " << endl << *heap << endl;
-//        } catch (const std::ios_base::failure &e) {
-//            cout << "Heap not affected" << endl;
-//        }
-//    } else if (operationCode == "32") {
-//        int key;
-//        cout << "Enter a key to be removed:";
-//        cin >> key;
-//        cout << endl;
-//        try {
-//            heap->remove(key);
-//        } catch (const std::invalid_argument &e) {
-//            cout << "No such key in the heap!" << endl;
-//        }
-//        cout << "Heap after removal: " << endl << *heap << endl;
-//    } else if (operationCode == "33") {
-//        int key;
-//        cout << "Enter a new key:";
-//        cin >> key;
-//        cout << endl;
-//        heap->insert(key);
-//        cout << "Heap after insertion: " << endl << *heap << endl;
-//    } else if (operationCode == "34") {
-//        int key;
-//        cout << "Enter a key to be searched for in the heap:";
-//        cin >> key;
-//        cout << endl;
-//        int index = heap->search(key);
-//        if (index != Heap::KEY_NOT_FOUND) {
-//            cout << "Entered key is in the heap" << endl;
-//        } else {
-//            cout << "Entered key is not in the heap" << endl;
-//        }
-//    } else if (operationCode == "35") {
-//        cout << endl;
-//        cout << "Heap: " << endl << *heap << endl;
-//        /////////////////////////////////////////////////////////////////
-//        //// Red-Black Tree - operations
-//        /////////////////////////////////////////////////////////////////
+        cout << endl;
+        delete matrixGraph;
+        GraphUtils::loadGraphFromTxt(&matrixGraph, IGraph::GraphStructure::IncidenceMatrix,
+                                     IGraph::GraphType::Directed, "directed_graph.txt");
+        delete listGraph;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Graphs has been loaded from the file!" << endl;
+    } else if (operationCode == "22") {
+        cout << "Enter number of vertices:";
+        cin >> nVertex;
+        cout << "Enter density [%]:";
+        cin >> density;
+        cout << endl;
+        delete matrixGraph;
+        try {
+            GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Dijkstra,
+                                                       IGraph::GraphStructure::IncidenceMatrix, nVertex, density);
+        } catch (const std::invalid_argument &e) {
+            cout << e.what() << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        delete listGraph;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Random graphs generated!" << endl;
+    } else if (operationCode == "23") {
+        if (listGraph != nullptr && matrixGraph != nullptr) {
+            cout << "--- Incidence matrix graph representation ---" << endl;
+            cout << *matrixGraph << endl << endl;
+            cout << "--- Adjacency list graph representation ---" << endl;
+            cout << *listGraph << endl;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
+        }
+    } else if (operationCode == "24") {
+        int *predecessorsOnPath = new int[listGraph->getVertexCount()];
+        DoublyLinkedList<int> shortestPath;
+        int shortestPathLength;
+        int startVertexID;
+        int endVertexID;
+        cout << "Enter start vertex ID:";
+        cin >> startVertexID;
+        if (startVertexID < 0 || startVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid start vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << "Enter end vertex ID:";
+        cin >> endVertexID;
+        if (endVertexID < 0 || endVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid end vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << endl;
+
+        GraphAlgorithms::findShortestPathDijkstraHeap(matrixGraph, startVertexID, endVertexID, predecessorsOnPath,
+                                                      &shortestPathLength);
+        shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexID);
+        if (shortestPath.getIterator().getData() != -1) {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Dijkstra - incidence matrix) is: "
+                 << shortestPath << endl;
+            cout << "Total weight = " << shortestPathLength << endl;
+        } else {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Dijkstra - incidence matrix) does not exist!" << endl;
+        }
+        GraphAlgorithms::findShortestPathDijkstraHeap(listGraph, startVertexID, endVertexID, predecessorsOnPath,
+                                                      &shortestPathLength);
+        shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexID);
+        if (shortestPath.getIterator().getData() != -1) {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Dijkstra - adjacency lists) is: "
+                 << shortestPath << endl;
+            cout << "Total weight = " << shortestPathLength << endl;
+        } else {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Dijkstra - adjacency lists) does not exist!" << endl;
+        }
+
+        delete[] predecessorsOnPath;
+    } else if (operationCode == "25") {
+        int *predecessorsOnPath = new int[listGraph->getVertexCount()];
+        bool pathExists;
+        DoublyLinkedList<int> shortestPath;
+        int shortestPathLength;
+        int startVertexID = 0;
+        int endVertexID = 5;
+        cout << "Enter start vertex ID:";
+        cin >> startVertexID;
+        if (startVertexID < 0 || startVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid start vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << "Enter end vertex ID:";
+        cin >> endVertexID;
+        if (endVertexID < 0 || endVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid end vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << endl;
+
+        GraphAlgorithms::findShortestPathBellmanFord(matrixGraph, startVertexID, endVertexID, &pathExists,
+                                                     predecessorsOnPath,
+                                                     &shortestPathLength);
+        shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexID);
+        if (shortestPath.getIterator().getData() != -1 && pathExists) {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Bellman-Ford - incidence matrix) is: "
+                 << shortestPath << endl;
+            cout << "Total weight = " << shortestPathLength << endl;
+        } else {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Bellman-Ford - incidence matrix) does not exist!" << endl;
+        }
+
+        GraphAlgorithms::findShortestPathBellmanFord(listGraph, startVertexID, endVertexID, &pathExists,
+                                                     predecessorsOnPath,
+                                                     &shortestPathLength);
+        shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexID);
+        if (shortestPath.getIterator().getData() != -1 && pathExists) {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Bellman-Ford - adjacency lists) is: "
+                 << shortestPath << endl;
+            cout << "Total weight = " << shortestPathLength << endl;
+        } else {
+            cout << "Shortest path from " << startVertexID << " to " << endVertexID
+                 << " (Bellman-Ford - adjacency lists) does not exist!" << endl;
+        }
+        delete[] predecessorsOnPath;
+        /////////////////////////////////////////////////////////////////
+        //// Maximal flow - operations
+        /////////////////////////////////////////////////////////////////
+    } else if (operationCode == "31") {
+        cout << endl;
+        delete matrixGraph;
+        GraphUtils::loadGraphFromTxt(&matrixGraph, IGraph::GraphStructure::IncidenceMatrix,
+                                     IGraph::GraphType::Directed, "capacity_network.txt");
+        delete listGraph;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Graphs has been loaded from the file!" << endl;
+    } else if (operationCode == "32") {
+        cout << "Enter number of vertices:";
+        cin >> nVertex;
+        cout << "Enter density [%]:";
+        cin >> density;
+        cout << endl;
+        delete matrixGraph;
+        try {
+            GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Ford_Fulkerson,
+                                                       IGraph::GraphStructure::IncidenceMatrix, nVertex, density);
+        } catch (const std::invalid_argument &e) {
+            cout << e.what() << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        delete listGraph;
+        listGraph = new ListGraph(dynamic_cast<MatrixGraph *>(matrixGraph));
+        cout << "Random graphs generated!" << endl;
+    } else if (operationCode == "33") {
+        if (listGraph != nullptr && matrixGraph != nullptr) {
+            cout << "--- Incidence matrix graph representation ---" << endl;
+            cout << *matrixGraph << endl << endl;
+            cout << "--- Adjacency list graph representation ---" << endl;
+            cout << *listGraph << endl;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
+        }
+    } else if (operationCode == "34") {
+        IGraph *flowNetwork;
+        int maxFlow;
+        int startVertexID;
+        int endVertexID;
+        cout << "Enter start vertex ID:";
+        cin >> startVertexID;
+        if (startVertexID < 0 || startVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid start vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << "Enter end vertex ID:";
+        cin >> endVertexID;
+        if (endVertexID < 0 || endVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid end vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << endl;
+
+        flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(matrixGraph, startVertexID, endVertexID,
+                                                                       &maxFlow);
+        cout << "Flow network (Ford-Fulkerson (BFS) - incidence matrix)\n" << *flowNetwork << endl;
+        cout << "Max flow = " << maxFlow << endl;
+        delete flowNetwork;
+
+
+        flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(listGraph, startVertexID, endVertexID,
+                                                                       &maxFlow);
+        cout << "Flow network (Ford-Fulkerson (BFS) - adjacency lists)\n" << *flowNetwork << endl;
+        cout << "Max flow = " << maxFlow << endl;
+        delete flowNetwork;
+    } else if (operationCode == "35") {
+        IGraph *flowNetwork;
+        int maxFlow;
+        int startVertexID;
+        int endVertexID;
+        cout << "Enter start vertex ID:";
+        cin >> startVertexID;
+        if (startVertexID < 0 || startVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid start vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << "Enter end vertex ID:";
+        cin >> endVertexID;
+        if (endVertexID < 0 || endVertexID >= listGraph->getVertexCount()) {
+            cout << "Error: invalid end vertex ID" << endl;
+            cout << "Try again..." << endl;
+            return ProgramState::RUNNING;
+        }
+        cout << endl;
+
+        flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(matrixGraph, startVertexID, endVertexID,
+                                                                       &maxFlow);
+        cout << "Flow network (Ford-Fulkerson (DFS) - incidence matrix)\n" << *flowNetwork << endl;
+        cout << "Max flow = " << maxFlow << endl;
+        delete flowNetwork;
+
+
+        flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(listGraph, startVertexID, endVertexID,
+                                                                       &maxFlow);
+        cout << "Flow network (Ford-Fulkerson (DFS) - adjacency lists)\n" << *flowNetwork << endl;
+        cout << "Max flow = " << maxFlow << endl;
+        delete flowNetwork;
     }
     return ProgramState::RUNNING;
 }
@@ -263,7 +427,7 @@ void ConsoleMenu::prepareMenuOperations() {
     menuItem.addMenuOption(menuOption);
 
     menuOption.ID = "3";
-    menuOption.description = "Maximal Flow";
+    menuOption.description = "Maximal flow";
     menuItem.addMenuOption(menuOption);
 
     menuOperation.menuItem = menuItem;
@@ -389,7 +553,7 @@ void ConsoleMenu::prepareMenuOperations() {
     // Maximal Flow
     ////////////////////////////////////////////////////////////////////
     menuOperation.ID = "3";
-    menuItem = MenuItem(MenuItem::OperationType::SUBMENU, "Maximal Flow");
+    menuItem = MenuItem(MenuItem::OperationType::SUBMENU, "Maximal flow");
 
     menuOption.ID = "1";
     menuOption.description = "Load a graph from file";

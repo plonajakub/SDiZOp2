@@ -40,7 +40,7 @@ GraphAlgorithms::findShortestPathDijkstra(const IGraph *graph, int startVertexID
 
 void
 GraphAlgorithms::findShortestPathDijkstraHeap(const IGraph *graph, int startVertexID, int endVertexID,
-                                              int *outPredecessorsOnPath) {
+                                              int *outPredecessorsOnPath, int *outShortestPathLength) {
     int vertexCount = graph->getVertexCount();
 
     HeapPriorityQueue<DijkstraVertex> queue(HeapPriorityQueue<DijkstraVertex>::Type::Min, vertexCount, startVertexID);
@@ -57,6 +57,7 @@ GraphAlgorithms::findShortestPathDijkstraHeap(const IGraph *graph, int startVert
     for (int i = 0; i < vertexCount; ++i) {
         currentVertex = queue.dequeue();
         if (currentVertex.id == endVertexID) {
+            *outShortestPathLength = currentVertex.distanceFromSource;
             break;
         }
         isVertexVisited[currentVertex.id] = true;
@@ -99,8 +100,8 @@ GraphAlgorithms::decodeShortestPath(const int *predecessorsOnPath, int startVert
 }
 
 void
-GraphAlgorithms::findShortestPathBellmanFord(const IGraph *graph, int startVertexID, bool *pathExists,
-                                             int *predecessorsOnPath) {
+GraphAlgorithms::findShortestPathBellmanFord(const IGraph *graph, int startVertexID, int endVertexID, bool *pathExists,
+                                             int *predecessorsOnPath, int *outShortestPathLength) {
     int vertexCount = graph->getVertexCount();
 
     int *vertexDistances = new int[vertexCount];
@@ -147,6 +148,7 @@ GraphAlgorithms::findShortestPathBellmanFord(const IGraph *graph, int startVerte
     *pathExists = true;
 
     finish:
+    *outShortestPathLength = vertexDistances[endVertexID];
     delete[] vertexDistances;
 }
 
@@ -165,8 +167,9 @@ int GraphAlgorithms::getLimitedMinIdx(const int *table, const bool *isNotValid, 
     return minIdx;
 }
 
-IGraph *GraphAlgorithms::findMinimalSpanningTreePrim(const IGraph *graph) {
+IGraph *GraphAlgorithms::findMinimalSpanningTreePrim(const IGraph *graph, int *outMstTotalWeight) {
     int vertexCount = graph->getVertexCount();
+    int mstTotalWeight = 0;
     HeapPriorityQueue<Edge> edges(HeapPriorityQueue<Edge>::Type::Min);
     IGraph *spanningTree;
     switch (graph->getGraphStructure()) {
@@ -205,15 +208,18 @@ IGraph *GraphAlgorithms::findMinimalSpanningTreePrim(const IGraph *graph) {
             edge = edges.dequeue();
         } while (isPartOfTree[edge.endVertexID]);
         spanningTree->addEdge(edge.startVertexID, edge.endVertexID, edge.parameter);
+        mstTotalWeight += edge.parameter;
         isPartOfTree[edge.endVertexID] = true;
         currentVertexID = edge.endVertexID;
     }
+    *outMstTotalWeight = mstTotalWeight;
     delete[] isPartOfTree;
     return spanningTree;
 }
 
-IGraph *GraphAlgorithms::findMinimalSpanningTreeKruskal(const IGraph *graph) {
+IGraph *GraphAlgorithms::findMinimalSpanningTreeKruskal(const IGraph *graph, int *outMstTotalWeight) {
     int vertexCount = graph->getVertexCount();
+    int mstTotalWieght = 0;
     DisjointSets vertexSets(vertexCount);
     HeapPriorityQueue<Edge> edges(HeapPriorityQueue<Edge>::Type::Min);
     IGraph *tree;
@@ -245,8 +251,10 @@ IGraph *GraphAlgorithms::findMinimalSpanningTreeKruskal(const IGraph *graph) {
             currentEdge = edges.dequeue();
         } while (!vertexSets.checkSetsDifferent(currentEdge.startVertexID, currentEdge.endVertexID));
         tree->addEdge(currentEdge.startVertexID, currentEdge.endVertexID, currentEdge.parameter);
+        mstTotalWieght += currentEdge.parameter;
         vertexSets.unionSets(currentEdge.startVertexID, currentEdge.endVertexID);
     }
+    *outMstTotalWeight = mstTotalWieght;
     return tree;
 }
 
