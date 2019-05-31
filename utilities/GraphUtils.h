@@ -24,7 +24,7 @@ public:
 
     // Density in %
     static void loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type, int nVertex,
-                                double density, int parameterMin, int parameterMax);
+                                double densityInPercents, int parameterMin, int parameterMax);
 
     static void loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
                                                IGraph::GraphStructure structure, int nVertex, double densityInPercents);

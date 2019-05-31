@@ -247,6 +247,8 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
             }
 
             delete[] predecessorsOnPath;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
         }
     } else if (operationCode == "25") {
         if (listGraph != nullptr && matrixGraph != nullptr) {
@@ -304,6 +306,8 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
                      << " (Bellman-Ford - adjacency lists) does not exist!" << endl;
             }
             delete[] predecessorsOnPath;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
         }
         /////////////////////////////////////////////////////////////////
         //// Maximal flow - operations
@@ -375,6 +379,8 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
             cout << "Flow network (Ford-Fulkerson (BFS) - adjacency lists)\n" << *flowNetwork << endl;
             cout << "Max flow = " << maxFlow << endl;
             delete flowNetwork;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
         }
     } else if (operationCode == "35") {
         if (listGraph != nullptr && matrixGraph != nullptr) {
@@ -410,6 +416,8 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
             cout << "Flow network (Ford-Fulkerson (DFS) - adjacency lists)\n" << *flowNetwork << endl;
             cout << "Max flow = " << maxFlow << endl;
             delete flowNetwork;
+        } else {
+            cout << "Error: graphs have not been loaded!" << endl;
         }
     }
     return ProgramState::RUNNING;

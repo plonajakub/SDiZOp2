@@ -37,7 +37,7 @@ void AlgorithmsTest::findShortestPathDijkstraTest() {
     int endVertexId = 3;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
-                                 "dijkstra_directed_graph.txt");
+                                 "directed_graph.txt");
     predecessorsOnPath = new int[graph->getVertexCount()];
     cout << *graph << endl;
     GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId, predecessorsOnPath);
@@ -47,7 +47,7 @@ void AlgorithmsTest::findShortestPathDijkstraTest() {
     delete graph;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
-                                 "dijkstra_directed_graph.txt");
+                                 "directed_graph.txt");
     GraphAlgorithms::findShortestPathDijkstra(graph, startVertexID, endVertexId, predecessorsOnPath);
     shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexId);
     cout << "Shortest path from " << startVertexID << " to " << endVertexId << " (AdjacencyList) is: " << shortestPath
@@ -65,7 +65,7 @@ void AlgorithmsTest::findShortestPathDijkstraHeapTest() {
     int endVertexId = 3;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
-                                 "dijkstra_directed_graph.txt");
+                                 "directed_graph.txt");
     predecessorsOnPath = new int[graph->getVertexCount()];
     cout << *graph << endl;
     GraphAlgorithms::findShortestPathDijkstraHeap(graph, startVertexID, endVertexId, predecessorsOnPath,
@@ -76,7 +76,7 @@ void AlgorithmsTest::findShortestPathDijkstraHeapTest() {
     delete graph;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
-                                 "dijkstra_directed_graph.txt");
+                                 "directed_graph.txt");
     GraphAlgorithms::findShortestPathDijkstraHeap(graph, startVertexID, endVertexId, predecessorsOnPath,
                                                   &shortestPathLength);
     shortestPath = GraphAlgorithms::decodeShortestPath(predecessorsOnPath, startVertexID, endVertexId);
@@ -96,7 +96,7 @@ void AlgorithmsTest::findShortestPathBellmanFordTest() {
     int endVertexId = 5;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
-                                 "bellman_ford_directed_graph.txt");
+                                 "directed_graph.txt");
     predecessorsOnPath = new int[graph->getVertexCount()];
     cout << *graph << endl;
     GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, endVertexId, &pathExists, predecessorsOnPath,
@@ -111,7 +111,7 @@ void AlgorithmsTest::findShortestPathBellmanFordTest() {
     delete graph;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
-                                 "bellman_ford_directed_graph.txt");
+                                 "directed_graph.txt");
     GraphAlgorithms::findShortestPathBellmanFord(graph, startVertexID, endVertexId, &pathExists, predecessorsOnPath,
                                                  &shortestPathLength);
     if (pathExists) {
@@ -131,7 +131,7 @@ void AlgorithmsTest::findMinimalSpanningTreePrim() {
     int mstTotalWeight;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Undirected,
-                                 "prim_undirected_graph.txt");
+                                 "undirected_graph.txt");
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(graph, &mstTotalWeight);
     cout << "Minimal spanning tree (IncidenceMatrix)\n" << *minimalSpanningTree << endl;
@@ -140,7 +140,7 @@ void AlgorithmsTest::findMinimalSpanningTreePrim() {
     delete minimalSpanningTree;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected,
-                                 "prim_undirected_graph.txt");
+                                 "undirected_graph.txt");
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreePrim(graph, &mstTotalWeight);
     cout << "Minimal spanning tree (AdjacencyList)\n" << *minimalSpanningTree << endl;
@@ -155,7 +155,7 @@ void AlgorithmsTest::findMinimalSpanningTreeKruskal() {
     int mstTotalWeight;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Undirected,
-                                 "kruskal_undirected_graph.txt");
+                                 "undirected_graph.txt");
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(graph, &mstTotalWeight);
     cout << "Minimal spanning tree (IncidenceMatrix)\n" << *minimalSpanningTree << endl;
@@ -164,7 +164,7 @@ void AlgorithmsTest::findMinimalSpanningTreeKruskal() {
     delete minimalSpanningTree;
 
     GraphUtils::loadGraphFromTxt(&graph, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Undirected,
-                                 "kruskal_undirected_graph.txt");
+                                 "undirected_graph.txt");
     cout << *graph << endl;
     minimalSpanningTree = GraphAlgorithms::findMinimalSpanningTreeKruskal(graph, &mstTotalWeight);
     cout << "Minimal spanning tree (AdjacencyList)\n" << *minimalSpanningTree << endl;
@@ -181,7 +181,7 @@ void AlgorithmsTest::findMaximalFlowFordFulkersonBfsTest() {
     int endVertexId = 4;
 
     GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
-                                 "ford_fulkerson_flow_network.txt");
+                                 "capacity_network.txt");
     cout << "Capacity network (IncidenceMatrix)\n" << *capacityNetwork << endl;
     flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(capacityNetwork, startVertexID, endVertexId,
                                                                    &maxFlow);
@@ -191,7 +191,7 @@ void AlgorithmsTest::findMaximalFlowFordFulkersonBfsTest() {
     delete flowNetwork;
 
     GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
-                                 "ford_fulkerson_flow_network.txt");
+                                 "capacity_network.txt");
     cout << "Capacity network (AdjacencyList)\n" << *capacityNetwork << endl;
     flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonBfs(capacityNetwork, startVertexID, endVertexId,
                                                                    &maxFlow);
@@ -209,7 +209,7 @@ void AlgorithmsTest::findMaximalFlowFordFulkersonDfsTest() {
     int endVertexId = 4;
 
     GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::IncidenceMatrix, IGraph::GraphType::Directed,
-                                 "ford_fulkerson_flow_network.txt");
+                                 "capacity_network.txt");
     cout << "Capacity network (IncidenceMatrix)\n" << *capacityNetwork << endl;
     flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(capacityNetwork, startVertexID, endVertexId,
                                                                    &maxFlow);
@@ -219,7 +219,7 @@ void AlgorithmsTest::findMaximalFlowFordFulkersonDfsTest() {
     delete flowNetwork;
 
     GraphUtils::loadGraphFromTxt(&capacityNetwork, IGraph::GraphStructure::AdjacencyList, IGraph::GraphType::Directed,
-                                 "ford_fulkerson_flow_network.txt");
+                                 "capacity_network.txt");
     cout << "Capacity network (AdjacencyList)\n" << *capacityNetwork << endl;
     flowNetwork = GraphAlgorithms::findMaximalFlowFordFulkersonDfs(capacityNetwork, startVertexID, endVertexId,
                                                                    &maxFlow);

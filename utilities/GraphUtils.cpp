@@ -31,8 +31,8 @@ void GraphUtils::loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure struct
 }
 
 void GraphUtils::loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type, int nVertex,
-                                 double density, int parameterMin, int parameterMax) {
-    density /= 100;
+                                 double densityInPercents, int parameterMin, int parameterMax) {
+    densityInPercents /= 100;
 
     if (structure == IGraph::GraphStructure::IncidenceMatrix) {
         *pGraph = new MatrixGraph(type, nVertex);
@@ -42,7 +42,7 @@ void GraphUtils::loadRandomGraph(IGraph **pGraph, IGraph::GraphStructure structu
     IGraph *graph = *pGraph;
     int fails = 0;
     int startVertexID, endVertexID, parameter;
-    while (graph->getDensity() < density) {
+    while (graph->getDensity() < densityInPercents) {
         try {
             startVertexID = getRand(0, graph->getVertexCount());
             endVertexID = getRand(0, graph->getVertexCount());
@@ -114,8 +114,9 @@ bool GraphUtils::isGraphConnected(const IGraph *graph) {
 }
 
 void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Algorithm algorithm,
-                                                IGraph::GraphStructure structure, int nVertex, double densityInPercents) {
-    if (nVertex < 1 || densityInPercents < 0 || densityInPercents > 100) {
+                                                IGraph::GraphStructure structure, int nVertex,
+                                                double densityInPercents) {
+    if (nVertex < 2) {
         throw std::invalid_argument("Number of vertex invalid!");
     }
     if (densityInPercents < 0 || densityInPercents > 100) {
@@ -124,41 +125,51 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
     double minimalDensityInPercents;
     switch (algorithm) {
         case Dijkstra:
-            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0, 100);
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0,
+                                        100);
             break;
         case Bellman_Ford:
-            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, -100, 100);
+            GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents,
+                                        -100, 100);
             break;
         case Kruskal:
         case Prim:
             minimalDensityInPercents = (static_cast<double>(2) / nVertex) * 100 + 1;
+            if (minimalDensityInPercents > 100) {
+                minimalDensityInPercents = 100;
+            }
             if (densityInPercents < minimalDensityInPercents) {
                 densityInPercents = minimalDensityInPercents;
-                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal"
+                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal equal to "
+                          << std::to_string(minimalDensityInPercents) << "%"
                           << std::endl;
             }
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex, densityInPercents, -100,
-                                            100);
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex,
+                                            densityInPercents, -100, 100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
         case Ford_Fulkerson:
-            minimalDensityInPercents = (static_cast<double>(2) / nVertex) * 100 + 1;
+            minimalDensityInPercents = (static_cast<double>(1) / nVertex) * 100 + 1;
+            if (minimalDensityInPercents > 100) {
+                minimalDensityInPercents = 100;
+            }
             if (densityInPercents < minimalDensityInPercents) {
                 densityInPercents = minimalDensityInPercents;
-                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal + 1"
+                std::cout << "WARNING! density below minimum for connected graph: density adjusted to minimal equal to "
+                          << std::to_string(minimalDensityInPercents) << "%"
                           << std::endl;
             }
             *pGraph = nullptr;
             do {
                 delete *pGraph;
-                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0,
-                                            100);
+                GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents,
+                                            0, 100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             // Net source is always the vertex with ID = 0
-            // Net sink is always the vertex with ID =  nVertex - 1
+            // Net sink is always the vertex with ID = nVertex - 1
             DoublyLinkedList<int> predecessors = (*pGraph)->getVertexPredecessors(0);
             for (auto it = predecessors.getIterator(); it != predecessors.getEndIt(); ++it) {
                 (*pGraph)->removeEdge(it.getData(), 0);
