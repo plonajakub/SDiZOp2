@@ -16,7 +16,7 @@ class GraphUtils {
 public:
 
     enum Algorithm {
-        Dijkstra, Bellman_Ford, Kruskal, Prim, Ford_Fulkerson
+        Dijkstra, Bellman_Ford, Kruskal, Prim, Ford_Fulkerson_BFS, Ford_Fulkerson_DFS
     };
 
     static void loadGraphFromTxt(IGraph **pGraph, IGraph::GraphStructure structure, IGraph::GraphType type,
@@ -31,9 +31,9 @@ public:
 
     static bool isGraphConnected(const IGraph *graph);
 
-private:
     // Returns random value from [leftLimit, rightLimit) interval
     static int getRand(int leftLimit, int rightLimit);
+private:
 
     friend class GraphUtilsTest;
 };

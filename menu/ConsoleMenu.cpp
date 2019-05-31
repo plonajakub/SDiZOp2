@@ -327,7 +327,7 @@ ConsoleMenu::ProgramState ConsoleMenu::chooseMenuOperation(const std::string &me
         cout << endl;
         delete matrixGraph;
         try {
-            GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Ford_Fulkerson,
+            GraphUtils::loadRandomGraphWithConstraints(&matrixGraph, GraphUtils::Algorithm::Ford_Fulkerson_BFS,
                                                        IGraph::GraphStructure::IncidenceMatrix, nVertex, density);
         } catch (const std::invalid_argument &e) {
             cout << e.what() << endl;

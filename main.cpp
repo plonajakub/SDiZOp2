@@ -8,6 +8,7 @@
 #include "tests/AlgorithmsTest.h"
 
 #include "menu/ConsoleMenu.h"
+#include "time_tests/TimeMeasurement.h"
 
 using std::cout;
 using std::endl;
@@ -30,8 +31,11 @@ int main() {
 //    AlgorithmsTest at;
 //    at.run();
 
-    ConsoleMenu cm;
-    cm.start();
+//    ConsoleMenu cm;
+//    cm.start();
+
+    TimeMeasurement tm;
+    tm.run();
 
     return 0;
 }

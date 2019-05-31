@@ -151,7 +151,8 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
                                             densityInPercents, -100, 100);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
-        case Ford_Fulkerson:
+        case Ford_Fulkerson_BFS:
+        case Ford_Fulkerson_DFS:
             minimalDensityInPercents = (static_cast<double>(1) / nVertex) * 100 + 1;
             if (minimalDensityInPercents > 100) {
                 minimalDensityInPercents = 100;
