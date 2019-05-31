@@ -75,10 +75,10 @@ private:
     // Used to normalize accumulated times from different data draws
     void divideEachTimeByDrawsNumber(MeasurementPoint **mps);
 
-    // Calculate time of an operation (here function) in nanoseconds
+
     double countTime(const std::function<void()> &function);
 
-    // Saves collected data about structure method's time in CSV format
+
     void saveTimeDataToFile(const std::string &fileName,
                             MeasurementPoint **measurementPoints);
 
