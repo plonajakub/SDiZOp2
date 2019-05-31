@@ -36,7 +36,7 @@ public:
 private:
 
     // Number of repeated operations of the same type with the same size
-    static const int DRAWS_NUMBER = 1;
+    static const int DRAWS_NUMBER = 100;
 
     static const int ROW_NUMBER = 5;
 
@@ -47,10 +47,10 @@ private:
     };
 
     // SP and MST
-    const int nVertexValues[ROW_NUMBER] = {50, 70, 90, 110, 130};
+//    const int nVertexValues[ROW_NUMBER] = {50, 70, 90, 110, 130};
 
     // MF
-//    const int nVertexValues[ROW_NUMBER] = {20, 35, 50, 65, 80};
+    const int nVertexValues[ROW_NUMBER] = {20, 35, 50, 65, 80};
 
     const int densityValues[COLUMN_NUMBER] = {25, 50, 75, 99};
 

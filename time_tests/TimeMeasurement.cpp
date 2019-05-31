@@ -4,9 +4,9 @@ TimeMeasurement::TimeMeasurement() : listGraph(nullptr), matrixGraph(nullptr) {
 }
 
 void TimeMeasurement::run() {
-    analyzeMinimalSpanningTreeTime();
-    analyzeShortestPathTime();
-//    analyzeMaximalFlowTime();
+//    analyzeMinimalSpanningTreeTime();
+//    analyzeShortestPathTime();
+    analyzeMaximalFlowTime();
 }
 
 double TimeMeasurement::countTime(const std::function<void()> &function) {
