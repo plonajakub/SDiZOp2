@@ -126,11 +126,11 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
     switch (algorithm) {
         case Dijkstra:
             GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents, 0,
-                                        100);
+                                        99);
             break;
         case Bellman_Ford:
             GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents,
-                                        -100, 100);
+                                        -99, 99);
             break;
         case Kruskal:
         case Prim:
@@ -148,7 +148,7 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
             do {
                 delete *pGraph;
                 GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Undirected, nVertex,
-                                            densityInPercents, -100, 100);
+                                            densityInPercents, -99, 99);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             break;
         case Ford_Fulkerson_BFS:
@@ -167,7 +167,7 @@ void GraphUtils::loadRandomGraphWithConstraints(IGraph **pGraph, GraphUtils::Alg
             do {
                 delete *pGraph;
                 GraphUtils::loadRandomGraph(pGraph, structure, IGraph::GraphType::Directed, nVertex, densityInPercents,
-                                            0, 100);
+                                            0, 99);
             } while (!GraphUtils::isGraphConnected(*pGraph));
             // Net source is always the vertex with ID = 0
             // Net sink is always the vertex with ID = nVertex - 1

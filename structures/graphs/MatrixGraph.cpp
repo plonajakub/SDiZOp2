@@ -204,45 +204,45 @@ double MatrixGraph::getDensity() const {
 
 //ok
 std::string MatrixGraph::toString() const {
+    const int numberFieldLen = 3;
     std::ostringstream graphString;
     int lastEdgeIdx = this->getEdgeCount() - 1;
-    graphString << "Incidence matrix:" << std::endl << std::endl;
-    graphString << std::setw(6) << "V\\E ";
+    graphString << std::endl << "Incidence matrix:" << std::endl;
+    graphString << "V\\E";
     for (int j = 0; j < this->getEdgeCount(); ++j) {
-        graphString << std::setw(4) << j << ',';
+        graphString << std::setw(numberFieldLen) << j << ',';
     }
     graphString << std::endl;
     for (int i = 0; i < this->getVertexCount(); ++i) {
-        graphString << std::setw(3) << std::to_string(i) << std::setw(3) << "[";
+        graphString << std::setw(2) << std::to_string(i) << "[";
         for (int j = 0; j < this->getEdgeCount() - 1; ++j) {
-            graphString << std::setw(4) << incidenceMatrix[i][j] << ',';
+            graphString << std::setw(numberFieldLen) << incidenceMatrix[i][j] << ',';
         }
         if (lastEdgeIdx >= 0) {
-            graphString << std::setw(4) << incidenceMatrix[i][lastEdgeIdx];
+            graphString << std::setw(numberFieldLen) << incidenceMatrix[i][lastEdgeIdx];
         }
         graphString << ']' << std::endl;
     }
 
-    graphString << std::endl << "Weight\\Flow table:" << std::endl << std::endl;
-    graphString << std::setw(4) << "E" << std::string(2, ' ');
+    graphString << std::endl << "Weight\\Flow table:" << std::endl;
+    graphString << "E" << std::string(2, ' ');
     for (int j = 0; j < this->getEdgeCount(); ++j) {
-        graphString << std::setw(4) << j << ',';
+        graphString << std::setw(numberFieldLen) << j << ',';
     }
     graphString << std::endl;
-    graphString << std::setw(6) << "[";
+    graphString << std::setw(3) << "[";
     for (int j = 0; j < this->getEdgeCount() - 1; ++j) {
-        graphString << std::setw(4) <<
+        graphString << std::setw(numberFieldLen) <<
                     ((edgeParameters[j] == std::numeric_limits<int>::max()) ?
                      "*" : std::to_string(edgeParameters[j]))
                     << ',';
     }
     if (lastEdgeIdx >= 0) {
-        graphString << std::setw(4)
+        graphString << std::setw(numberFieldLen)
                     << ((edgeParameters[this->getEdgeCount() - 1] == std::numeric_limits<int>::max()) ?
                         "*" : std::to_string(edgeParameters[this->getEdgeCount() - 1]));
     }
     graphString << ']' << std::endl;
-
     return graphString.str();
 }
 

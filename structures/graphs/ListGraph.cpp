@@ -146,30 +146,31 @@ double ListGraph::getDensity() const {
 }
 
 std::string ListGraph::toString() const {
+    const int numberFieldLen = 3;
     std::stringstream graphString;
     int vertexCount = this->getVertexCount();
-    graphString << "Successors lists:" << std::endl << std::endl;
-    graphString << std::setw(3) << "V" << std::endl;
+    graphString << std::endl << "Successors lists:" << std::endl;
+    graphString << std::setw(2) <<  "V" << std::endl;
     for (int i = 0; i < vertexCount; ++i) {
-        graphString << std::setw(3) << i << ": " << std::setw(2) << successorsLists[i].toString() << std::endl;
+        graphString << std::setw(2) << i << ": " << successorsLists[i].toString() << std::endl;
     }
     graphString << std::endl;
 
-    graphString << "Parameter matrix:" << std::endl << std::endl;
-    graphString << std::setw(5) << "V\\V" << std::setw(1) << "";
+    graphString << "Parameter matrix:" << std::endl;
+    graphString << "V\\V";
     for (int j = 0; j < vertexCount; ++j) {
-        graphString << std::setw(4) << j << ',';
+        graphString << std::setw(numberFieldLen) << j << ',';
     }
     graphString << std::endl;
     for (int i = 0; i < vertexCount; ++i) {
-        graphString << std::setw(3) << std::to_string(i) << std::setw(3) << "[";
+        graphString << std::setw(2) << std::to_string(i) << "[";
         for (int j = 0; j < vertexCount - 1; ++j) {
-            graphString << std::setw(4) <<
+            graphString << std::setw(numberFieldLen) <<
                         ((parametersMatrix[i][j] == std::numeric_limits<int>::max()) ? "*" : std::to_string(
                                 parametersMatrix[i][j]))
                         << ',';
         }
-        graphString << std::setw(4) <<
+        graphString << std::setw(numberFieldLen) <<
                     ((parametersMatrix[i][vertexCount - 1] == std::numeric_limits<int>::max()) ? "*" : std::to_string(
                             parametersMatrix[i][vertexCount - 1]));
         graphString << ']' << std::endl;
